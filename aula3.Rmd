@@ -1,0 +1,46 @@
+---
+title: "Aula 2"
+date: "23/08/2018"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+```{r echo = F}
+knitr::opts_chunk$set(comment = NA)
+```
+
+##  Observações atípicas - o que fazer?
+
+Se uma observação é outlier no caso univariado, provavelmente será outlier no caso multivariado, mas se a observação não é outlier no univariado, não necessariamente não será outlier no caso multivariado. Exemplo: é possível observar pessoas com $1,50m$ a $1,90m$ e com peso de $40kg$ a $120kg$, o que não é comum é uma pessoa de $1,90m$ pesar $40kg$.
+
+### Detecção de outlier - caso bivariado
+
+```{r}
+require(ggplot2)
+
+ggplot(faithful, aes(waiting, eruptions)) +
+geom_point() +
+stat_ellipse()
+```
+
+### Detecção de outlier - caso multivariado
+
+```{r}
+df <- data.frame(x1 = c(1,2,3,5,3,1,8,4,5,4), x2 = c(2,1,3,5,3,3,8,4,5,5),
+x3 = c(1,1,2,3,3,3,8,5,5,5), x4 = c(3,1,2,5,2,1,7,4,4,4))
+
+cor(df) # Matriz de correlação
+
+d2 <- mahalanobis(df, center=colMeans(df),cov=cov(df))
+
+#Se a amostra tiver distribuição aproximadamente normal
+# a distância de mahalanobis terá distribuição
+#qui-quadrada com g = (número de variaveis da amostra) graus de liberdade.
+d2
+
+qchisq(.975, ncol(df)) #distância acima do percentil 95 indica outlier.
+```
+
+Neste exemplo não houve detecção de outlier multivariado usando a distância de Mahalanobis.

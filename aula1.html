@@ -105,29 +105,29 @@ y[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>,<s
 <span class="co">#Visualizando os dados</span>
 y &lt;-<span class="st"> </span><span class="kw">as.tibble</span>(y)
 y</code></pre></div>
-<pre><code>## # A tibble: 20 x 5
-##         V1      V2       V3       V4       V5
-##      &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
-##  1  0.132   0.0849  NA       1.57      1.23  
-##  2 -0.898   0.715   NA       0.645    NA     
-##  3  1.35   -0.966   NA       0.853    NA     
-##  4  0.420   0.462   NA      -0.360    NA     
-##  5 -0.288  -0.686   -0.694   0.517     0.509 
-##  6  1.36    0.739    0.157  -1.98     -1.36  
-##  7  1.94   -0.319    0.326   0.563    -0.668 
-##  8 -2.36   -1.05    -0.585  -0.437    -1.55  
-##  9 -0.594  -0.286    0.337  -0.765     0.900 
-## 10 -0.545  -1.84     1.32   -0.00508  -2.63  
-## 11 -0.196  -1.04     1.83    0.546    -0.592 
-## 12 -0.830   1.92    -0.773  -0.314     0.673 
-## 13 -1.44   -0.147   -1.14   -0.752    -1.31  
-## 14 -0.0761  0.330   -0.372   1.05     -0.0477
-## 15  0.726  -1.04     0.0239 -0.409    -1.14  
-## 16 -0.788   0.352   -0.179  -2.35     -0.528 
-## 17 -0.819  -0.275    0.930  -0.223    -1.08  
-## 18  0.205  -0.387    1.59   -0.145    -0.738 
-## 19 -0.952  -0.571   -0.119  -0.00796   1.17  
-## 20 -0.966  -0.991    1.62    2.12     -1.88</code></pre>
+<pre><code># A tibble: 20 x 5
+        V1      V2       V3       V4       V5
+     &lt;dbl&gt;   &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;    &lt;dbl&gt;
+ 1  0.132   0.0849  NA       1.57      1.23  
+ 2 -0.898   0.715   NA       0.645    NA     
+ 3  1.35   -0.966   NA       0.853    NA     
+ 4  0.420   0.462   NA      -0.360    NA     
+ 5 -0.288  -0.686   -0.694   0.517     0.509 
+ 6  1.36    0.739    0.157  -1.98     -1.36  
+ 7  1.94   -0.319    0.326   0.563    -0.668 
+ 8 -2.36   -1.05    -0.585  -0.437    -1.55  
+ 9 -0.594  -0.286    0.337  -0.765     0.900 
+10 -0.545  -1.84     1.32   -0.00508  -2.63  
+11 -0.196  -1.04     1.83    0.546    -0.592 
+12 -0.830   1.92    -0.773  -0.314     0.673 
+13 -1.44   -0.147   -1.14   -0.752    -1.31  
+14 -0.0761  0.330   -0.372   1.05     -0.0477
+15  0.726  -1.04     0.0239 -0.409    -1.14  
+16 -0.788   0.352   -0.179  -2.35     -0.528 
+17 -0.819  -0.275    0.930  -0.223    -1.08  
+18  0.205  -0.387    1.59   -0.145    -0.738 
+19 -0.952  -0.571   -0.119  -0.00796   1.17  
+20 -0.966  -0.991    1.62    2.12     -1.88  </code></pre>
 <p>Visualizando dados faltantes:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">PlotMiss</span>(y, <span class="dt">main=</span><span class="st">&quot;Dados Faltantes&quot;</span>) <span class="co"># Do DescTools</span></code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
@@ -138,29 +138,28 @@ y</code></pre></div>
 <p>Agora analisando com o pacote <code>MissMech</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">TestMCARNormality</span>(<span class="dt">data=</span>y, <span class="dt">del.lesscases =</span> <span class="dv">1</span>)
 <span class="kw">summary</span>(out)</code></pre></div>
-<pre><code>## 
-## Number of imputation:  1 
-## 
-## Number of Patterns:  2 
-## 
-## Total number of cases used in the analysis:  19 
-## 
-##  Pattern(s) used:
-##           V1   V2   V3   V4   V5   Number of cases
-## group.1    1    1   NA    1   NA                 3
-## group.2    1    1    1    1    1                16
-## 
-## 
-##     Test of normality and Homoscedasticity:
-##   -------------------------------------------
-## 
-## Hawkins Test:
-## 
-##     P-value for the Hawkins test of normality and homoscedasticity:  0.4359473 
-## 
-## Non-Parametric Test:
-## 
-##     P-value for the non-parametric test of homoscedasticity:  0.584033</code></pre>
+<pre><code>
+Number of imputation:  1 
+
+Number of Patterns:  2 
+
+Total number of cases used in the analysis:  19 
+
+ Pattern(s) used:
+          V1   V2   V3   V4   V5   Number of cases
+group.1    1    1   NA    1   NA                 3
+group.2    1    1    1    1    1                16
+
+    Test of normality and Homoscedasticity:
+  -------------------------------------------
+
+Hawkins Test:
+
+    P-value for the Hawkins test of normality and homoscedasticity:  0.4359473 
+
+Non-Parametric Test:
+
+    P-value for the non-parametric test of homoscedasticity:  0.584033 </code></pre>
 <p>Observe que:</p>
 <ul>
 <li>Há um valor perdido no caso 1 (variável 3);</li>
@@ -187,35 +186,34 @@ dados &lt;-<span class="st"> </span><span class="kw">tibble</span>(v1, v2, v3, v
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">missmap</span>(dados)</code></pre></div>
 <p><img src="data:image/png;base64,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" /><!-- --></p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">out &lt;-<span class="st"> </span><span class="kw">TestMCARNormality</span>(<span class="dt">data =</span> dados, <span class="dt">del.lesscases =</span> <span class="dv">1</span>)</code></pre></div>
-<pre><code>## Warning: There is not sufficient number of complete cases.
-##   Dist.Free imputation requires a least 10 complete cases
-##   or 2*number of variables, whichever is bigger.
-##   imputation.method = normal will be used instead.</code></pre>
+<pre><code>Warning: There is not sufficient number of complete cases.
+  Dist.Free imputation requires a least 10 complete cases
+  or 2*number of variables, whichever is bigger.
+  imputation.method = normal will be used instead.</code></pre>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">summary</span>(out)</code></pre></div>
-<pre><code>## 
-## Number of imputation:  1 
-## 
-## Number of Patterns:  3 
-## 
-## Total number of cases used in the analysis:  16 
-## 
-##  Pattern(s) used:
-##           v1   v2   v3   v4   v5   Number of cases
-## group.1    1    1    1    1    1                 5
-## group.2    1    1   NA    1    1                 7
-## group.3    1    1    1   NA    1                 4
-## 
-## 
-##     Test of normality and Homoscedasticity:
-##   -------------------------------------------
-## 
-## Hawkins Test:
-## 
-##     P-value for the Hawkins test of normality and homoscedasticity:  0.5196287 
-## 
-## Non-Parametric Test:
-## 
-##     P-value for the non-parametric test of homoscedasticity:  0.108529</code></pre>
+<pre><code>
+Number of imputation:  1 
+
+Number of Patterns:  3 
+
+Total number of cases used in the analysis:  16 
+
+ Pattern(s) used:
+          v1   v2   v3   v4   v5   Number of cases
+group.1    1    1    1    1    1                 5
+group.2    1    1   NA    1    1                 7
+group.3    1    1    1   NA    1                 4
+
+    Test of normality and Homoscedasticity:
+  -------------------------------------------
+
+Hawkins Test:
+
+    P-value for the Hawkins test of normality and homoscedasticity:  0.5196287 
+
+Non-Parametric Test:
+
+    P-value for the non-parametric test of homoscedasticity:  0.108529 </code></pre>
 </div>
 </section>
 

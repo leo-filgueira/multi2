@@ -74,192 +74,41 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <section class="main-content">
-<div id="tratamentos-para-lidar-com-dados-perdidos" class="section level2">
-<h2>Tratamentos para lidar com dados perdidos</h2>
-<ul>
-<li><p>Eliminar casos ou variáveis problemáticas</p></li>
-<li><p>Seguindo essa diretriz pensaríamos em eliminar o caso <span class="math inline">\(13\)</span> e/ou a variável V3 que apresentam os maiores percentuais de dados perdidos. Não há uma orientação segura, desse modo o analista deverá considerar as perdas e ganhos no processo de elminação.</p></li>
-<li><p>Utilizar um método de atribuição (<strong>LER</strong> Hair pág 61 a 64)</p></li>
-</ul>
-<p>Veja pacote <code>mice</code> função <code>mice</code> e pacote <code>VIM</code> função <code>kNN</code>.</p>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(mice)
-<span class="kw">require</span>(VIM)
-
-n &lt;-<span class="st"> </span><span class="dv">20</span>
-p &lt;-<span class="st"> </span><span class="dv">5</span>
-
-<span class="kw">set.seed</span>(<span class="dv">1010</span>)
-y &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n <span class="op">*</span><span class="st"> </span>p),<span class="dt">nrow =</span> n)
-<span class="co">#Vamos definir alguns casos perdidos</span>
-y[<span class="dv">1</span><span class="op">:</span><span class="dv">4</span>,<span class="dv">3</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>
-y[<span class="dv">2</span><span class="op">:</span><span class="dv">4</span>,<span class="dv">5</span>] &lt;-<span class="st"> </span><span class="ot">NA</span>
-
-<span class="kw">complete</span>(<span class="kw">mice</span>(y, <span class="dt">print=</span><span class="ot">FALSE</span>))</code></pre></div>
-<pre><code>            V1          V2          V3           V4          V5
-1   0.13154085  0.08487109 -0.37153266  1.567786166  1.22928982
-2  -0.89790987  0.71486499 -0.77276358  0.644977071 -0.66770311
-3   1.35194461 -0.96624080  1.83448990  0.853215243 -0.73836031
-4   0.42007469  0.46230137  0.15716619 -0.360481960 -1.36346885
-5  -0.28845968 -0.68605062 -0.69431272  0.517182812  0.50897487
-6   1.36456136  0.73876017  0.15716619 -1.978282908 -1.36346885
-7   1.93872531 -0.31882166  0.32590725  0.562623033 -0.66770311
-8  -2.36098302 -1.05196788 -0.58511242 -0.437089345 -1.55340177
-9  -0.59411413 -0.28592085  0.33682643 -0.765279280  0.89950783
-10 -0.54455270 -1.83786541  1.31967884 -0.005079319 -2.62924785
-11 -0.19590829 -1.03990318  1.83448990  0.546463286 -0.59212631
-12 -0.83007345  1.92416803 -0.77276358 -0.313698940  0.67264880
-13 -1.43538053 -0.14718335 -1.14073839 -0.751924345 -1.30631003
-14 -0.07607103  0.32966774 -0.37153266  1.046418792 -0.04770297
-15  0.72586799 -1.03558049  0.02385841 -0.408624843 -1.14389243
-16 -0.78773341  0.35150814 -0.17912952 -2.349238899 -0.52763474
-17 -0.81867894 -0.27533224  0.93012404 -0.223386083 -1.07938467
-18  0.20464153 -0.38736785  1.58910048 -0.144527545 -0.73836031
-19 -0.95241303 -0.57081846 -0.11875332 -0.007959542  1.16706441
-20 -0.96580033 -0.99120874  1.61812729  2.124718712 -1.87932189</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">y_knn &lt;-<span class="st"> </span><span class="kw">kNN</span>(<span class="kw">as.data.frame</span>(y))
-y_knn</code></pre></div>
-<pre><code>            V1          V2          V3           V4          V5 V1_imp
-1   0.13154085  0.08487109 -0.11875332  1.567786166  1.22928982  FALSE
-2  -0.89790987  0.71486499 -0.37153266  0.644977071  0.67264880  FALSE
-3   1.35194461 -0.96624080 -0.11875332  0.853215243 -0.04770297  FALSE
-4   0.42007469  0.46230137 -0.11875332 -0.360481960  0.89950783  FALSE
-5  -0.28845968 -0.68605062 -0.69431272  0.517182812  0.50897487  FALSE
-6   1.36456136  0.73876017  0.15716619 -1.978282908 -1.36346885  FALSE
-7   1.93872531 -0.31882166  0.32590725  0.562623033 -0.66770311  FALSE
-8  -2.36098302 -1.05196788 -0.58511242 -0.437089345 -1.55340177  FALSE
-9  -0.59411413 -0.28592085  0.33682643 -0.765279280  0.89950783  FALSE
-10 -0.54455270 -1.83786541  1.31967884 -0.005079319 -2.62924785  FALSE
-11 -0.19590829 -1.03990318  1.83448990  0.546463286 -0.59212631  FALSE
-12 -0.83007345  1.92416803 -0.77276358 -0.313698940  0.67264880  FALSE
-13 -1.43538053 -0.14718335 -1.14073839 -0.751924345 -1.30631003  FALSE
-14 -0.07607103  0.32966774 -0.37153266  1.046418792 -0.04770297  FALSE
-15  0.72586799 -1.03558049  0.02385841 -0.408624843 -1.14389243  FALSE
-16 -0.78773341  0.35150814 -0.17912952 -2.349238899 -0.52763474  FALSE
-17 -0.81867894 -0.27533224  0.93012404 -0.223386083 -1.07938467  FALSE
-18  0.20464153 -0.38736785  1.58910048 -0.144527545 -0.73836031  FALSE
-19 -0.95241303 -0.57081846 -0.11875332 -0.007959542  1.16706441  FALSE
-20 -0.96580033 -0.99120874  1.61812729  2.124718712 -1.87932189  FALSE
-   V2_imp V3_imp V4_imp V5_imp
-1   FALSE   TRUE  FALSE  FALSE
-2   FALSE   TRUE  FALSE   TRUE
-3   FALSE   TRUE  FALSE   TRUE
-4   FALSE   TRUE  FALSE   TRUE
-5   FALSE  FALSE  FALSE  FALSE
-6   FALSE  FALSE  FALSE  FALSE
-7   FALSE  FALSE  FALSE  FALSE
-8   FALSE  FALSE  FALSE  FALSE
-9   FALSE  FALSE  FALSE  FALSE
-10  FALSE  FALSE  FALSE  FALSE
-11  FALSE  FALSE  FALSE  FALSE
-12  FALSE  FALSE  FALSE  FALSE
-13  FALSE  FALSE  FALSE  FALSE
-14  FALSE  FALSE  FALSE  FALSE
-15  FALSE  FALSE  FALSE  FALSE
-16  FALSE  FALSE  FALSE  FALSE
-17  FALSE  FALSE  FALSE  FALSE
-18  FALSE  FALSE  FALSE  FALSE
-19  FALSE  FALSE  FALSE  FALSE
-20  FALSE  FALSE  FALSE  FALSE</code></pre>
-<ul>
-<li><strong>Exercício:</strong> Com base nos dados da tabela 2.1 realize a avaliação de dados perdidos, realize o procedimento de substituição dos valores perdidos e faça uma comparação entre a média das variáveis antes e após a substituição dos valores perdidos.</li>
-</ul>
+<div id="observacoes-atipicas---o-que-fazer" class="section level2">
+<h2>Observações atípicas - o que fazer?</h2>
+<p>Se uma observação é outlier no caso univariado, provavelmente será outlier no caso multivariado, mas se a observação não é outlier no univariado, não necessariamente não será outlier no caso multivariado. Exemplo: é possível observar pessoas com <span class="math inline">\(1,50m\)</span> a <span class="math inline">\(1,90m\)</span> e com peso de <span class="math inline">\(40kg\)</span> a <span class="math inline">\(120kg\)</span>, o que não é comum é uma pessoa de <span class="math inline">\(1,90m\)</span> pesar <span class="math inline">\(40kg\)</span>.</p>
+<div id="deteccao-de-outlier---caso-bivariado" class="section level3">
+<h3>Detecção de outlier - caso bivariado</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(ggplot2)</code></pre></div>
+<pre><code>Loading required package: ggplot2</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(faithful, <span class="kw">aes</span>(waiting, eruptions)) <span class="op">+</span>
+<span class="kw">geom_point</span>() <span class="op">+</span>
+<span class="kw">stat_ellipse</span>()</code></pre></div>
+<p><img src="data:image/png;base64,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" /><!-- --></p>
 </div>
-<div id="exercicio" class="section level1">
-<h1>Exercício</h1>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">v1 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">1.3</span>, <span class="fl">4.1</span>, <span class="ot">NA</span>, <span class="fl">0.9</span>, <span class="fl">0.4</span>, <span class="fl">1.5</span>, <span class="fl">0.2</span>, <span class="fl">2.1</span>, <span class="fl">1.8</span>, <span class="fl">4.5</span>, <span class="fl">2.5</span>, <span class="fl">4.5</span>, <span class="ot">NA</span>, <span class="fl">2.8</span>, <span class="fl">3.7</span>, <span class="fl">1.6</span>, <span class="fl">0.5</span>, <span class="fl">2.8</span>, <span class="fl">2.2</span>, <span class="fl">1.8</span>)
+<div id="deteccao-de-outlier---caso-multivariado" class="section level3">
+<h3>Detecção de outlier - caso multivariado</h3>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">4</span>), <span class="dt">x2 =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>),
+<span class="dt">x3 =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>), <span class="dt">x4 =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>))
 
-v2 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">9.9</span>, <span class="fl">5.7</span>, <span class="fl">9.9</span>, <span class="fl">8.6</span>, <span class="fl">8.3</span>, <span class="fl">6.7</span>, <span class="fl">8.8</span>, <span class="fl">8.0</span>, <span class="fl">7.6</span>, <span class="fl">8.0</span>, <span class="fl">9.2</span>, <span class="fl">6.4</span>, <span class="ot">NA</span>, <span class="fl">6.1</span>, <span class="ot">NA</span>, <span class="fl">6.4</span>, <span class="fl">9.2</span>, <span class="fl">5.2</span>, <span class="fl">6.7</span>, <span class="fl">9.0</span>)
+<span class="kw">cor</span>(df) <span class="co"># Matriz de correlação</span></code></pre></div>
+<pre><code>          x1        x2        x3        x4
+x1 1.0000000 0.9214520 0.8553220 0.8941547
+x2 0.9214520 1.0000000 0.9254530 0.9052685
+x3 0.8553220 0.9254530 1.0000000 0.7914936
+x4 0.8941547 0.9052685 0.7914936 1.0000000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d2 &lt;-<span class="st"> </span><span class="kw">mahalanobis</span>(df, <span class="dt">center=</span><span class="kw">colMeans</span>(df),<span class="dt">cov=</span><span class="kw">cov</span>(df))
 
-v3 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">6.7</span>, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">4</span>), <span class="fl">4.8</span>, <span class="fl">4.5</span>, <span class="dv">3</span>, <span class="kw">rep</span>(<span class="ot">NA</span>, <span class="dv">3</span>), <span class="fl">5.3</span>, <span class="ot">NA</span>, <span class="fl">6.4</span>, <span class="ot">NA</span>, <span class="dv">5</span>, <span class="ot">NA</span>, <span class="dv">5</span>, <span class="ot">NA</span>, <span class="dv">5</span>)
-
-v4&lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">3.0</span>, <span class="ot">NA</span>, <span class="fl">3.0</span>, <span class="fl">2.1</span>, <span class="fl">1.2</span>,<span class="ot">NA</span>, <span class="fl">3.0</span>, <span class="fl">3.8</span>, <span class="fl">3.2</span>, <span class="fl">3.3</span>, <span class="fl">3.3</span>, <span class="fl">3.0</span>, <span class="ot">NA</span> , <span class="ot">NA</span>, <span class="fl">3.0</span>, <span class="ot">NA</span>, <span class="fl">3.3</span>, <span class="ot">NA</span>, <span class="fl">2.6</span>, <span class="fl">2.2</span>)
-
-v5 &lt;-<span class="st"> </span><span class="kw">c</span>(<span class="fl">2.6</span>, <span class="fl">2.9</span>, <span class="ot">NA</span>, <span class="fl">1.8</span>, <span class="fl">1.7</span>, <span class="fl">2.5</span>, <span class="fl">2.4</span>, <span class="fl">1.4</span>, <span class="fl">2.5</span>, <span class="fl">2.2</span>, <span class="fl">3.9</span>, <span class="fl">2.5</span>, <span class="fl">2.7</span>, <span class="fl">3.8</span>, <span class="ot">NA</span>, <span class="fl">2.1</span>, <span class="fl">2.8</span>, <span class="fl">2.7</span>, <span class="fl">2.9</span>, <span class="dv">3</span>)
-
-<span class="kw">require</span>(tibble)</code></pre></div>
-<pre><code>## Loading required package: tibble</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">dados &lt;-<span class="st"> </span><span class="kw">tibble</span>(v1, v2, v3, v4, v5)</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Utilizando a tabela 2.1</span>
-
-<span class="kw">require</span>(mice)
-dados_mice &lt;-<span class="st"> </span><span class="kw">complete</span>(<span class="kw">mice</span>(dados,<span class="dt">print=</span>F))
-dados_mice</code></pre></div>
-<pre><code>##     v1  v2  v3  v4  v5
-## 1  1.3 9.9 6.7 3.0 2.6
-## 2  4.1 5.7 6.4 3.0 2.9
-## 3  0.2 9.9 5.0 3.0 2.5
-## 4  0.9 8.6 4.5 2.1 1.8
-## 5  0.4 8.3 5.0 1.2 1.7
-## 6  1.5 6.7 4.8 2.6 2.5
-## 7  0.2 8.8 4.5 3.0 2.4
-## 8  2.1 8.0 3.0 3.8 1.4
-## 9  1.8 7.6 5.0 3.2 2.5
-## 10 4.5 8.0 4.5 3.3 2.2
-## 11 2.5 9.2 5.0 3.3 3.9
-## 12 4.5 6.4 5.3 3.0 2.5
-## 13 3.7 5.7 6.7 2.6 2.7
-## 14 2.8 6.1 6.4 1.2 3.8
-## 15 3.7 6.4 5.3 3.0 2.5
-## 16 1.6 6.4 5.0 2.6 2.1
-## 17 0.5 9.2 6.4 3.3 2.8
-## 18 2.8 5.2 5.0 1.2 2.7
-## 19 2.2 6.7 5.0 2.6 2.9
-## 20 1.8 9.0 5.0 2.2 3.0</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(VIM)
-dados_knn &lt;-<span class="st"> </span><span class="kw">kNN</span>(dados)
-dados_knn</code></pre></div>
-<pre><code>##     v1  v2  v3  v4  v5 v1_imp v2_imp v3_imp v4_imp v5_imp
-## 1  1.3 9.9 6.7 3.0 2.6  FALSE  FALSE  FALSE  FALSE  FALSE
-## 2  4.1 5.7 5.0 3.0 2.9  FALSE  FALSE   TRUE   TRUE  FALSE
-## 3  2.5 9.9 5.0 3.0 2.8   TRUE  FALSE   TRUE  FALSE   TRUE
-## 4  0.9 8.6 5.0 2.1 1.8  FALSE  FALSE   TRUE  FALSE  FALSE
-## 5  0.4 8.3 5.0 1.2 1.7  FALSE  FALSE   TRUE  FALSE  FALSE
-## 6  1.5 6.7 4.8 2.6 2.5  FALSE  FALSE  FALSE   TRUE  FALSE
-## 7  0.2 8.8 4.5 3.0 2.4  FALSE  FALSE  FALSE  FALSE  FALSE
-## 8  2.1 8.0 3.0 3.8 1.4  FALSE  FALSE  FALSE  FALSE  FALSE
-## 9  1.8 7.6 5.0 3.2 2.5  FALSE  FALSE   TRUE  FALSE  FALSE
-## 10 4.5 8.0 5.0 3.3 2.2  FALSE  FALSE   TRUE  FALSE  FALSE
-## 11 2.5 9.2 5.0 3.3 3.9  FALSE  FALSE   TRUE  FALSE  FALSE
-## 12 4.5 6.4 5.3 3.0 2.5  FALSE  FALSE  FALSE  FALSE  FALSE
-## 13 3.7 6.1 5.0 3.0 2.7   TRUE   TRUE   TRUE   TRUE  FALSE
-## 14 2.8 6.1 6.4 3.0 3.8  FALSE  FALSE  FALSE   TRUE  FALSE
-## 15 3.7 8.0 5.0 3.0 2.5  FALSE   TRUE   TRUE  FALSE   TRUE
-## 16 1.6 6.4 5.0 2.6 2.1  FALSE  FALSE  FALSE   TRUE  FALSE
-## 17 0.5 9.2 5.0 3.3 2.8  FALSE  FALSE   TRUE  FALSE  FALSE
-## 18 2.8 5.2 5.0 3.0 2.7  FALSE  FALSE  FALSE   TRUE  FALSE
-## 19 2.2 6.7 5.0 2.6 2.9  FALSE  FALSE   TRUE  FALSE  FALSE
-## 20 1.8 9.0 5.0 2.2 3.0  FALSE  FALSE  FALSE  FALSE  FALSE</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="co">#Checando a diferença entre as médias das variáveis antes e após a substituição dos valores</span>
-<span class="kw">mean</span>(dados<span class="op">$</span>v1,<span class="dt">na.rm=</span>T)</code></pre></div>
-<pre><code>## [1] 2.177778</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados<span class="op">$</span>v2,<span class="dt">na.rm=</span>T)</code></pre></div>
-<pre><code>## [1] 7.761111</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados<span class="op">$</span>v3,<span class="dt">na.rm=</span>T)</code></pre></div>
-<pre><code>## [1] 5.077778</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados<span class="op">$</span>v4,<span class="dt">na.rm=</span>T)</code></pre></div>
-<pre><code>## [1] 2.857143</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados<span class="op">$</span>v5,<span class="dt">na.rm=</span>T)</code></pre></div>
-<pre><code>## [1] 2.577778</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_mice<span class="op">$</span>v1)</code></pre></div>
-<pre><code>## [1] 2.155</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_mice<span class="op">$</span>v2)</code></pre></div>
-<pre><code>## [1] 7.59</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_mice<span class="op">$</span>v3)</code></pre></div>
-<pre><code>## [1] 5.225</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_mice<span class="op">$</span>v4)</code></pre></div>
-<pre><code>## [1] 2.66</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_mice<span class="op">$</span>v5)</code></pre></div>
-<pre><code>## [1] 2.57</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_knn<span class="op">$</span>v1)</code></pre></div>
-<pre><code>## [1] 2.27</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_knn<span class="op">$</span>v2)</code></pre></div>
-<pre><code>## [1] 7.69</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_knn<span class="op">$</span>v3)</code></pre></div>
-<pre><code>## [1] 5.035</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_knn<span class="op">$</span>v4)</code></pre></div>
-<pre><code>## [1] 2.86</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">mean</span>(dados_knn<span class="op">$</span>v5)</code></pre></div>
-<pre><code>## [1] 2.585</code></pre>
+<span class="co">#Se a amostra tiver distribuição aproximadamente normal</span>
+<span class="co"># a distância de mahalanobis terá distribuição</span>
+<span class="co">#qui-quadrada com g = (número de variaveis da amostra) graus de liberdade.</span>
+d2</code></pre></div>
+<pre><code> [1] 6.3040841 4.7731721 2.3674093 4.9064417 1.0433109 6.0088335 4.5807909
+ [8] 4.1387594 0.7264117 1.1507864</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qchisq</span>(.<span class="dv">975</span>, <span class="kw">ncol</span>(df)) <span class="co">#distância acima do percentil 95 indica outlier.</span></code></pre></div>
+<pre><code>[1] 11.14329</code></pre>
+<p>Neste exemplo não houve detecção de outlier multivariado usando a distância de Mahalanobis.</p>
+</div>
 </div>
 </section>
 
