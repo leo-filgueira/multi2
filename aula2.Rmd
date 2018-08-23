@@ -37,6 +37,7 @@ y_knn
 
 ```
 
+
 + **Exercício:** Com base nos dados da tabela 2.1 realize a avaliação de dados perdidos, realize o procedimento de substituição dos valores perdidos e faça uma comparação entre a média das variáveis antes e após a substituição dos valores perdidos.
 
 ```{r echo = F, message=F, warning=F}
