@@ -7,6 +7,10 @@ output:
     highlight: github
 ---
 
+```{r echo = F}
+knitr::opts_chunk$set(comment = NA)
+```
+
 ## Tratamentos para lidar com dados perdidos
 
 - Eliminar casos ou variáveis problemáticas

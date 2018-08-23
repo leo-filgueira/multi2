@@ -7,6 +7,10 @@ output:
     highlight: github
 ---
 
+```{r echo = F}
+knitr::opts_chunk$set(comment = NA)
+```
+
 ## Dados perdidos
 
 Considere que $n$ é o número de casos; $p$ é o número de variáveis. O número de casos completos deve ser maior ou igual a $2p$ , além disso, só utilizaremos este pacote no caso de haver valores perdidos e a função só se aplica se o número mínimo de casos para um grupo de casos perdidos for maior do que 1 e corresponde ao argumento `del.lesscases = 1` (o default é 6); se o conjunto de dados não tiver mais do que 1 dado perdido para cada grupo de casos perdidos, a função retornará erro.
