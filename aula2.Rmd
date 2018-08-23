@@ -17,7 +17,7 @@ output:
 
 Veja pacote `mice` função `mice` e pacote `VIM` função `kNN`.
 
-```{r}
+```{r message=F}
 require(mice)
 require(VIM)
 
@@ -29,8 +29,8 @@ y <- matrix(rnorm(n * p),nrow = n)
 
 complete(mice(y, print=FALSE))
 
-y_knn <- kNN(y)
-y_knn
+# y_knn <- kNN(y)
+# y_knn
 
 ```
 
