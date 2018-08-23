@@ -1,0 +1,36 @@
+---
+title: "Aula 2"
+date: "23/08/2018"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+## Tratamentos para lidar com dados perdidos
+
+- Eliminar casos ou variáveis problemáticas
+
+- Seguindo essa diretriz pensaríamos em eliminar o caso 13 e/ou a variável V3 que apresentam os maiores percentuais de dados perdidos. Não há uma orientação segura, desse modo o analista deverá considerar as perdas e ganhos no processo de elminação.
+
+- Utilizar um método de atribuição (**LER** Hair pág 61 a 64) 
+
+Veja pacote `mice` função `mice` e pacote `VIM` função `kNN`.
+
+```{r}
+require(mice)
+require(VIM)
+
+n <- 20
+p <- 5
+
+set.seed(1010)
+y <- matrix(rnorm(n * p),nrow = n)
+
+complete(mice(y, print=FALSE))
+
+y_knn <- kNN(y)
+y_knn
+
+```
+

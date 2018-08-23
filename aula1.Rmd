@@ -1,0 +1,99 @@
+---
+title: "Análise Multivariada II - Aula 1"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+## Dados perdidos
+
+Considere que $n$ é o número de casos; $p$ é o número de variáveis. O número de casos completos deve ser maior ou igual a $2p$ , além disso, só utilizaremos este pacote no caso de haver valores perdidos e a função só se aplica se o número mínimo de casos para um grupo de casos perdidos for maior do que 1 e corresponde ao argumento `del.lesscases = 1` (o default é 6); se o conjunto de dados não tiver mais do que 1 dado perdido para cada grupo de casos perdidos, a função retornará erro.
+
+O teste de hipótese a ser realizado pela função TestMCARNormality do pacote MissMech é $H_0:$ As variância dos grupos são iguais (homocedasticidade)
+
+Ativando pacotes necessários:
+
+```{r warning = FALSE, message = FALSE}
+if(!require(MissMech)){install.packages("MissMech", repos = "https://cran.revolutionanalytics.com")}
+if(!require(DescTools)){install.packages("DescTools", repos = "https://cran.revolutionanalytics.com")}
+if(!require(Amelia)){install.packages("Amelia", repos = "https://cran.revolutionanalytics.com")}
+
+require(Amelia)
+require(DescTools)
+require(MissMech)
+require(tidyverse)
+```
+
+```{r}
+#Exemplo: vamos criar um conjunto de dados com 20 casos e 5 variáveis.
+#MAR - dados perdidos ao acaso (Missin at Random)
+#MCAR - dados perdidos completamente ao acaso (Missing Completaly at Random)
+
+n <- 20
+p <- 5
+
+set.seed(1010)
+y <- matrix(rnorm(n * p),nrow = n)
+
+#Vamos definir alguns casos perdidos
+y[1:4,3] <- NA
+y[2:4,5] <- NA
+
+#Visualizando os dados
+y <- as.tibble(y)
+y
+```
+
+Visualizando dados faltantes:
+
+```{r warning=FALSE, message=FALSE}
+PlotMiss(y, main="Dados Faltantes") # Do DescTools
+
+# ou
+
+missmap(y) # Amelia
+```
+
+Agora analisando com o pacote `MissMech`:
+
+```{r}
+out <- TestMCARNormality(data=y, del.lesscases = 1)
+summary(out)
+```
+
+Observe que:
+
+- Há um valor perdido no caso 1 (variável 3);
+- Há 2 valores perdidos nos casos de 2 a 4 (variável 3 e variável 5) o que resultou em 2 grupos: grupo 1 com 3 casos e grupo 2 (caso completo) com 16 casos, totalizando 19 casos na análise;
+- O caso 1 não é considerado pois há apenas um grupo com este padrão;
+
+O teste retorna p-valor $0.44$ indicando a aceitação da normalidade multivariada e a aleatoriedade dos dados perdidos. Desse modo podemos realizar o processo de atribuição de valores aos casos
+perdidos.
+
+1. Realize a análise para os dados da tabela 2.1 Ref. (Hair 6a.ed. pág 59)
+
+```{r}
+v1 <- c(1.3, 4.1, NA, 0.9, 0.4, 1.5, 0.2, 2.1, 1.8, 4.5, 2.5, 4.5, NA, 2.8, 3.7, 1.6, 0.5, 2.8, 2.2, 1.8)
+
+v2 <- c(9.9, 5.7, 9.9, 8.6, 8.3, 6.7, 8.8, 8.0, 7.6, 8.0, 9.2, 6.4, NA, 6.1, NA, 6.4, 9.2, 5.2, 6.7, 9.0)
+
+v3 <- c(6.7, rep(NA, 4), 4.8, 4.5, 3, rep(NA, 3), 5.3, NA, 6.4, NA, 5, NA, 5, NA, 5)
+
+v4<- c(3.0, NA, 3.0, 2.1, 1.2,NA, 3.0, 3.8, 3.2, 3.3, 3.3, 3.0, NA , NA, 3.0, NA, 3.3, NA, 2.6, 2.2)
+
+v5 <- c(2.6, 2.9, NA, 1.8, 1.7, 2.5, 2.4, 1.4, 2.5, 2.2, 3.9, 2.5, 2.7, 3.8, NA, 2.1, 2.8, 2.7, 2.9, 3)
+
+dados <- tibble(v1, v2, v3, v4, v5)
+```
+
+```{r warning = F, message= F}
+PlotMiss(dados, main = "Dados faltantes")
+
+missmap(dados)
+
+out <- TestMCARNormality(data = dados, del.lesscases = 1)
+summary(out)
+```
+
