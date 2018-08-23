@@ -34,3 +34,4 @@ complete(mice(y, print=FALSE))
 
 ```
 
+oi
