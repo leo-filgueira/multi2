@@ -74,7 +74,6 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <section class="main-content">
-<pre><code>## Loading required package: mvnormtest</code></pre>
 <p>Testando normalidade multivariada no dataset <code>iris</code>:</p>
 <div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mvnormtest<span class="op">::</span><span class="kw">mshapiro.test</span>(<span class="kw">t</span>(<span class="kw">as.matrix</span>(iris[, <span class="op">-</span><span class="dv">5</span>])))</code></pre></div>
 <pre><code>
@@ -83,6 +82,19 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 data:  Z
 W = 0.97935, p-value = 0.02342</code></pre>
 <p>Como p-valor é 0.0234212, rejeitamos a normalidade multivariada.</p>
+<p>Criando um conjunto de dados multivariado com n = 300 e p = 5 e aplicando o teste de shapiro multivariado ao mesmo:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">n &lt;-<span class="st"> </span><span class="dv">300</span>
+p &lt;-<span class="st"> </span><span class="dv">5</span>
+
+dados &lt;-<span class="st"> </span><span class="kw">matrix</span>(<span class="kw">rnorm</span>(n<span class="op">*</span>p), <span class="dt">nrow =</span> n)
+
+mvnormtest<span class="op">::</span><span class="kw">mshapiro.test</span>(<span class="kw">t</span>(dados))</code></pre></div>
+<pre><code>
+    Shapiro-Wilk normality test
+
+data:  Z
+W = 0.98853, p-value = 0.01795</code></pre>
+<p>Como p-valor é 0.0179535, não rejeitamos a hipótese de normalidade multivariada.</p>
 <div id="exercicios" class="section level2">
 <h2>Exercícios</h2>
 <div id="pesquisar-sobre-pacote-mvn" class="section level3">
