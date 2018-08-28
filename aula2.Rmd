@@ -13,7 +13,7 @@ knitr::opts_chunk$set(comment = NA)
 
 ## Tratamentos para lidar com dados perdidos
 
-- Eliminar casos ou variáveis problemáticas
+- Eliminar casos ou variáveis problemáticas [OI]
 
 - Seguindo essa diretriz pensaríamos em eliminar o caso $13$ e/ou a variável V3 que apresentam os maiores percentuais de dados perdidos. Não há uma orientação segura, desse modo o analista deverá considerar as perdas e ganhos no processo de elminação.
 
