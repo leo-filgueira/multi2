@@ -1,0 +1,29 @@
+---
+title: "Pacote MVN"
+author: "Camila Simões, Jessyka Goltara, Leonardo Filgueira"
+date: "`r Sys.Date()`"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+```{r warning = F, message = F}
+knitr::opts_chunk$set(comment = NA)
+
+if(!require(MVN)){install.packages("MVN", repos = "https://cran.revolutionanalytics.com")}
+```
+
+O pacote `MVN` está disponível no cran, e tem como objetivo analisar normalidade multivariada. Utilizaremos o dataset `iris` para os exemplos.
+
+```{r}
+require(MVN)
+
+data(iris)
+```
+
+A função `mvn` realiza testes de normalidade multivariada, gráficos multivariados, detecção de outliers multivariados, além de teste de normalidade e gráficos univariados.
+
+## Fontes:
+
+- [vignette do pacote](https://cran.r-project.org/web/packages/MVN/vignettes/MVN.pdf)
