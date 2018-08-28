@@ -1,6 +1,6 @@
 ---
 title: "Análise Multivariada II - Aula 1"
-date: "`r Sys.Date()`"
+date: "21/08/18"
 output:
   prettydoc::html_pretty:
     theme: cayman
