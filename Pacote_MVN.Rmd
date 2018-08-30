@@ -12,6 +12,8 @@ output:
 knitr::opts_chunk$set(comment = NA, fig.align = "center")
 
 if(!require(MVN)){install.packages("MVN", repos = "https://cran.revolutionanalytics.com")}
+
+if(!require(DT)){install.packages("DT", repos = "https://cran.revolutionanalytics.com")}
 ```
 
 O pacote `MVN` está disponível no cran, e tem como objetivo analisar normalidade multivariada. Utilizaremos o dataset `iris` para os exemplos.
