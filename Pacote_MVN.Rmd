@@ -9,7 +9,7 @@ output:
 ---
 
 ```{r echo = F, warning = F, message = F}
-knitr::opts_chunk$set(comment = NA)
+knitr::opts_chunk$set(comment = NA, fig.align = "center")
 
 if(!require(MVN)){install.packages("MVN", repos = "https://cran.revolutionanalytics.com")}
 ```
@@ -27,7 +27,9 @@ virginica <- iris %>%
 
 A função `mvn` realiza testes de normalidade multivariada, gráficos multivariados, detecção de outliers multivariados, além de teste de normalidade e gráficos univariados. 
 
-Com o argumento `mvnTest` permite que escolhamos dentre 4 opções de testes:
+## Testes de normalidade multivariada
+
+Com o argumento `mvnTest` permite que escolhamos dentre 5 opções de testes:
 
 - `mvnTest = "mardia"`: Ao utilizar esse valor, a função irá calcular o coeficiente de assimetria e de curtose de *Mardia*, assim como o p-valor associado às duas medidas.
     
@@ -55,8 +57,76 @@ Com o argumento `mvnTest` permite que escolhamos dentre 4 opções de testes:
     ```
 
     Novamente podemos dizer que temos uma amostra de uma distribuição normal multivariada.
+   
     **Obs.:** Esse teste não poder ser aplicado para um $n > 5000$ ou $n < 3$. Essa condição é herdada do teste de Shapiro.
+    
+- `mvnTest = "dh"`: Ao escolher `dh` para este parâmetro, será realizado o teste de *Doornik-Hansen*, que, assim como o de Mardia, se baseia na assimetria e na curtose.
+
+    ```{r}
+    resultado <- mvn(data = virginica, mvnTest = "dh")
+    DT::datatable(resultado$multivariateNormality, rownames = F) 
+    ```
+
+    Perceba que este teste nos leva a rejeitar a hipótese de normalidade multivariada.
+    
+A função `mvn` possui um parâmetro `alpha`, que é o nível de singificância a ser usado nos testes, e por isso a função já retorna a decisão do teste: *YES* caso p-valor seja maior que `alpha` e *NO*, caso contrário.
+
+- `mvnTest = "energy"`: Por fim, com este parâmetro será executado o teste baseado na *"Distância de energia"* [^1], que é uma distância entre distribuições de probabilidade.
+
+    ```{r}
+    resultado <- mvn(data = virginica, mvnTest = "energy")
+    DT::datatable(resultado$multivariateNormality, rownames = F) 
+    ```
+    
+    Segundo este teste não rejeitamos a hipótese de normalidade multivariada.
+
+## Gráficos univariados
+
+Com o parâmetro `univariatePlot` podemos escolher dentre Q-Q plots, histogramas, box plots ou gráficos de dispersão, um para cada variável. Certamente os dois primeiros facilitam mais na identificação da distribuição. Vejamos um exemplo com histograma:
+
+```{r}
+histograma <- mvn(data = virginica, univariatePlot = "histogram")
+```
+
+Além dos gráficos, a função retorna alguns testes e estatísticas descritivas, de acordo com o parâmetro `mvnTest`.
+Podemos ver que a variável `Sepal.Width` é a que mais se aproxima da curva da distribuição normal.
+
+## Testes univariados
+
+Com o parâmetro `univariateTest`, podemos escolher dentre os testes de Shapiro-Wilk, *Cramer-von Mises*, *Lilliefors*, *Shapiro-Francia* ou *Anderson-Darling*, para ser aplicado a todas as variáveis do dataset.
+
+## Gráficos bivariados
+
+A função também permite que façamos gráficos bivariados, de perspectiva ou de contorno. Para isso então, selecionaremos apenas as duas primeiras colunas de `virginica`
+
+```{r}
+virginica2 <- virginica[, 1:2]
+
+perspectiva <- mvn(virginica2, multivariatePlot = "persp")
+
+contorno <- mvn(virginica2, multivariatePlot = "contour")
+```
+
+Novamente, além do gráfico são realizados os testes, de acordo com os parâmetros `mvnTest` e `univariateTest`.
+
+## Outliers
+
+Para a identificação de outliers multivariados foram implementados métodos para encontrar valores dicrepantes, baseados na distância de Mahalanobis. O parâmetro a ser utilizado é `multivariateOutlierMethod`, que pode ser `"quan"` ou `"adj"`, sendo o segundo a distância de Mahalanobis ajustada.
+
+```{r}
+out1 <- mvn(virginica, multivariateOutlierMethod = "quan")
+
+out2 <- mvn(virginica, multivariateOutlierMethod = "adj")
+```
+
+Neste exemplo podemos perceber que a distância ajustada identificou menos outliers: 2, contra 3 identificados pela distância sem o ajuste.
+
+[^1]: A vignette do pacote apresenta um erro de digitação neste parâmetro, repetindo a mesma descrição do tópico anterior.
     
 ## Fontes:
 
 - [vignette do pacote](https://cran.r-project.org/web/packages/MVN/vignettes/MVN.pdf)
+
+- [help da função MVN](https://www.rdocumentation.org/packages/MVN/versions/5.5/topics/mvn)
+
+- [Post sobre teste de normalidade multivariada no RPubs](http://rstudio-pubs-static.s3.amazonaws.com/356739_a9ed8f3ccc9045bf937b35a7d6379f6b.html)
