@@ -123,6 +123,17 @@ out2 <- mvn(virginica, multivariateOutlierMethod = "adj")
 
 Neste exemplo podemos perceber que a distância ajustada identificou menos outliers: 2, contra 3 identificados pela distância sem o ajuste.
 
+## Análise por grupos
+
+A função `mvn` oferece a possibilidade de fazer a análise de normalidade por grupos. Basta utilizar o parâmetro `subset`, com o nome da coluna que apresenta os grupos entre aspas. Então vamos fazer a análise de normalidade por espécie. 
+
+```{r}
+result <- mvn(data = iris, subset = "Species", mvnTest = "hz")
+
+result$multivariateNormality
+```
+
+Perceba que para cada espécie foi verificada a hipótese de normalidade.
 [^1]: A vignette do pacote apresenta um erro de digitação neste parâmetro, repetindo a mesma descrição do tópico anterior.
     
 ## Fontes:
