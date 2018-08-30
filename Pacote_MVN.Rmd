@@ -51,7 +51,7 @@ Com o argumento `mvnTest` permite que escolhamos dentre 5 opções de testes:
 
     Novamente temos a não rejeição da hipótese de normalidade multivariada.
     
-- `mvnTest = "royston"`: O teste realizado neste caso é o teste de *Royston* é a generaliação do teste de Shapiro-Wilk para o caso multivariado.
+- `mvnTest = "royston"`: O teste realizado neste caso é o teste de *Royston* é a generalização do teste de Shapiro-Wilk para o caso multivariado.
 
     ```{r}
     resultado <- mvn(data = virginica, mvnTest = "royston")
@@ -121,7 +121,7 @@ out1 <- mvn(virginica, multivariateOutlierMethod = "quan")
 out2 <- mvn(virginica, multivariateOutlierMethod = "adj")
 ```
 
-Neste exemplo podemos perceber que a distância ajustada identificou menos outliers: 2, contra 3 identificados pela distância sem o ajuste.
+Neste exemplo podemos perceber que a distância ajustada identificou menos outliers.
 
 ## Análise por grupos
 
@@ -134,6 +134,7 @@ result$multivariateNormality
 ```
 
 Perceba que para cada espécie foi verificada a hipótese de normalidade.
+
 [^1]: A vignette do pacote apresenta um erro de digitação neste parâmetro, repetindo a mesma descrição do tópico anterior.
     
 ## Fontes:
