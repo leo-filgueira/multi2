@@ -8,7 +8,7 @@ output:
     highlight: github
 ---
 
-```{r warning = F, message = F}
+```{r echo = F, warning = F, message = F}
 knitr::opts_chunk$set(comment = NA)
 
 if(!require(MVN)){install.packages("MVN", repos = "https://cran.revolutionanalytics.com")}
@@ -16,14 +16,47 @@ if(!require(MVN)){install.packages("MVN", repos = "https://cran.revolutionanalyt
 
 O pacote `MVN` está disponível no cran, e tem como objetivo analisar normalidade multivariada. Utilizaremos o dataset `iris` para os exemplos.
 
-```{r}
+```{r warning=F, message=FALSE}
 require(MVN)
+require(dplyr)
 
-data(iris)
+virginica <- iris %>% 
+  filter(Species == "virginica") %>% 
+  select(-Species)
 ```
 
-A função `mvn` realiza testes de normalidade multivariada, gráficos multivariados, detecção de outliers multivariados, além de teste de normalidade e gráficos univariados.
+A função `mvn` realiza testes de normalidade multivariada, gráficos multivariados, detecção de outliers multivariados, além de teste de normalidade e gráficos univariados. 
 
+Com o argumento `mvnTest` permite que escolhamos dentre 4 opções de testes:
+
+- `mvnTest = "mardia"`: Ao utilizar esse valor, a função irá calcular o coeficiente de assimetria e de curtose de *Mardia*, assim como o p-valor associado às duas medidas.
+    
+    ```{r}
+    resultado <- mvn(data = virginica, mvnTest = "mardia")
+    DT::datatable(resultado$multivariateNormality, rownames = F)
+    ```
+    
+    Se o resultado for positivo para o teste de curtose e assimetria, podemos supor que os dados são uma amostra de uma distribuição normal multivariada. Ou seja, este teste verifica a normalidade de acordo com essas duas características da distribuição: curtose e assimetria.
+
+- `mvnTest = "hz"`: Desta maneira a função irá executar o teste de normalidade multivariada de *Henze-Zirkler*. A ideia basea-se na distância de *Mahalanobis* entre cada ponto e o centróide da distribuição, seguindo a ideia de medir a quantos desvios está uma observação da média.
+
+    ```{r}
+    resultado <- mvn(data = virginica, mvnTest = "hz")
+    DT::datatable(resultado$multivariateNormality, rownames = F)  
+    ```
+
+    Novamente temos a não rejeição da hipótese de normalidade multivariada.
+    
+- `mvnTest = "royston"`: O teste realizado neste caso é o teste de *Royston* é a generaliação do teste de Shapiro-Wilk para o caso multivariado.
+
+    ```{r}
+    resultado <- mvn(data = virginica, mvnTest = "royston")
+    DT::datatable(resultado$multivariateNormality, rownames = F)  
+    ```
+
+    Novamente podemos dizer que temos uma amostra de uma distribuição normal multivariada.
+    **Obs.:** Esse teste não poder ser aplicado para um $n > 5000$ ou $n < 3$. Essa condição é herdada do teste de Shapiro.
+    
 ## Fontes:
 
 - [vignette do pacote](https://cran.r-project.org/web/packages/MVN/vignettes/MVN.pdf)
