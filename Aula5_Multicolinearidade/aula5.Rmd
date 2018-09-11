@@ -1,0 +1,82 @@
+---
+title: "Aula 5 - Multicolinearidade"
+date: "11/09/18"
+output:
+  prettydoc::html_pretty:
+    theme: cayman
+    highlight: github
+---
+
+##Modelo de Regressão Linear Múltiplo
+Seja $Y$ uma variável dependente e $X_i$ variáveis independentes. Dado um modelo linear múltiplo:
+$$Y = \beta_0 + \beta_1 X_1 + ... + \beta_n X_n$$
+
+## Multicolinearidade
+Queremos um modelo onde as variáveis independentes sejam pouco correlacionadas entre si e que exista uma correlação alta entre as variáveis independentes e a variável dependente.
+
+A multicolinearidade ocorre quando qualquer variável independente é altamente correlacionada com o conjunto de outras variáveis independentes.
+
+## Efeitos da multicolinearidade
+Sejam $X_1$($M[,1]$) e $X_2$($M[,2]$) duas variáveis com correlação igual a $1$, essa singularidade não permite estimar os dois parâmetros.
+# Exemplo:
+```{r}
+M=matrix(c(1,2,4,2,4,8,3,6,12,5,10,1),ncol=3,nrow=4, byrow = T)
+M
+
+cor(M)
+
+lm(M[,3]~M[,1]+M[,2])
+```
+
+Agora observando a correlação das variáveis $(M[,1])$ e $(M[,3])$, percebemos que é a correlação é baixa. Logo, não acreditamos que $(M[,3])$ irá explicar a variável resposta $(M[,1])$.
+
+```{r}
+lm(M[,1]~M[,2]+M[,3])
+```
+
+## Simulação 
+Primeiro simularemos as variáveis independentes:
+```{r,message=F, warning=FALSE}
+require(MASS)
+require(clusterGeneration)
+set.seed(20)
+num.vars<-4
+num.obs<-30
+cov.mat<-genPositiveDefMat(num.vars,covMethod="unifcorrmat")$Sigma
+X<-mvrnorm(num.obs,rep(0,num.vars),Sigma=cov.mat)
+print(cor(X), digits = 1)
+
+```
+
+Agora simularemos a variável dependente como uma combinação linear das variáveis independentes:
+
+```{r}
+set.seed(2)
+parms<-runif(num.vars,-10,10)
+y<-X %*% matrix(parms) + rnorm(num.obs,sd=2)
+```
+
+Ajustando o modelo:
+$$Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4$$
+
+```{r}
+mod1 <- lm(y ~ X[,1]+X[,2]+X[,3]+X[,4])
+
+summary(mod1)
+```
+
+Para modelos multiplos, olhamos o ''Adjusted R-squared'' para sabermos o quanto o modelo ajustado explica a variável dependente.
+
+## Avaliação da multicolinearidade
+Uma maneira de encontrar colinearidade entre as variáveis é calculando uma matriz de correlação das variáveis independentes. A presença de correlação alta ($0,9$ ou maior) é uma das indicações de colinearidade.
+
+## Como detectar a multicolinearidade?
+
+1. Coeficiente de correlação
+
+100. Determinante da matriz de correlação 
+
+2000. Autovalores
+
+300. Tolerância/VIF
+
