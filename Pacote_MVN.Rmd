@@ -12,6 +12,8 @@ output:
 knitr::opts_chunk$set(comment = NA, fig.align = "center")
 
 if(!require(MVN)){install.packages("MVN", repos = "https://cran.revolutionanalytics.com")}
+
+if(!require(DT)){install.packages("DT", repos = "https://cran.revolutionanalytics.com")}
 ```
 
 O pacote `MVN` está disponível no cran, e tem como objetivo analisar normalidade multivariada. Utilizaremos o dataset `iris` para os exemplos.
@@ -49,7 +51,7 @@ Com o argumento `mvnTest` permite que escolhamos dentre 5 opções de testes:
 
     Novamente temos a não rejeição da hipótese de normalidade multivariada.
     
-- `mvnTest = "royston"`: O teste realizado neste caso é o teste de *Royston* é a generaliação do teste de Shapiro-Wilk para o caso multivariado.
+- `mvnTest = "royston"`: O teste realizado neste caso é o teste de *Royston* é a generalização do teste de Shapiro-Wilk para o caso multivariado.
 
     ```{r}
     resultado <- mvn(data = virginica, mvnTest = "royston")
@@ -119,7 +121,19 @@ out1 <- mvn(virginica, multivariateOutlierMethod = "quan")
 out2 <- mvn(virginica, multivariateOutlierMethod = "adj")
 ```
 
-Neste exemplo podemos perceber que a distância ajustada identificou menos outliers: 2, contra 3 identificados pela distância sem o ajuste.
+Neste exemplo podemos perceber que a distância ajustada identificou menos outliers.
+
+## Análise por grupos
+
+A função `mvn` oferece a possibilidade de fazer a análise de normalidade por grupos. Basta utilizar o parâmetro `subset`, com o nome da coluna que apresenta os grupos entre aspas. Então vamos fazer a análise de normalidade por espécie. 
+
+```{r}
+result <- mvn(data = iris, subset = "Species", mvnTest = "hz")
+
+result$multivariateNormality
+```
+
+Perceba que para cada espécie foi verificada a hipótese de normalidade.
 
 [^1]: A vignette do pacote apresenta um erro de digitação neste parâmetro, repetindo a mesma descrição do tópico anterior.
     
