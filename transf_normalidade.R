@@ -4,6 +4,7 @@ require(MVN)
 dados <- starwars %>% 
   select(height, mass) %>% 
   filter_all(all_vars(!is.na(.)))
+
 mvn(as.data.frame(dados))
 
 persp <- mvn(as.data.frame(dados), multivariatePlot = "persp")
@@ -24,7 +25,7 @@ cont <- mvn(as.data.frame(t2), multivariatePlot = "contour")
 mvn(as.data.frame(t2))
 
 d <- data.frame(a = exp(rnorm(100, 2, 5)),
-                a = exp(rnorm(100, 2.5, 15)))
+                b = exp(rnorm(100, 2.5, 15)))
 
 mvn(d)
 
