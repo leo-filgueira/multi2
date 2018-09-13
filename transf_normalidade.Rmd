@@ -4,7 +4,9 @@ author:
 - Camila Simões 
 - Jessyka Goltara 
 - Leonardo Filgueira
-output: revealjs::revealjs_presentation
+output: 
+  revealjs::revealjs_presentation:
+    theme: solarized
 ---
 
 
@@ -47,7 +49,7 @@ dados <- tibble(x1 = exp(rnorm(100, 2, 5)),
 mvn(dados)[1:2]
 ```
 
-## Transformação - $ln$
+## Transformação: $ln$
 
 ```{r}
 dados_transf <- dados %>% 
@@ -68,7 +70,7 @@ dados <- tibble(x1 = rchisq(100, 15),
 mvn(dados)[1:2]
 ```
 
-## Transformação - $\sqrt{X}$
+## Transformação: $\sqrt{X}$
 
 Aplicando a raiz quadrada sobre as variáveis:
 
@@ -91,7 +93,7 @@ dados <- tibble(x1 = rgamma(500, 10, 50),
 mvn(dados)[1:2]
 ```
 
-## Transformação - BoxCox
+## Transformação: BoxCox
 
 - Transformação nos dados em caso de assimetria. 
 - Baseado na variação do parâmetro $\lambda$.
@@ -102,7 +104,7 @@ $$Y = \dfrac{X^{\lambda} - 1}{\lambda}$$
 
 - Estimação de $\lambda$ - máxima verossimilhança.
 
-## Transformação - BoxCox
+## Transformação: BoxCox
 
 ```{r, warning=FALSE, message=FALSE}
 require(car)
