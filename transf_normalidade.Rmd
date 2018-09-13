@@ -1,0 +1,166 @@
+---
+title: "Transformações para obter normalidade"
+author:
+- Camila Simões 
+- Jessyka Goltara 
+- Leonardo Filgueira
+output: revealjs::revealjs_presentation
+---
+
+
+## Situação 1
+
+
+<style type="text/css">
+
+body, td {
+   font-size: 14px;
+}
+code.r{
+  font-size: 28px;
+}
+pre {
+  font-size: 12px
+}
+</style>
+
+
+```{r echo = F, warning=FALSE, message=FALSE}
+knitr::opts_chunk$set(comment = NA)
+
+require(dplyr)
+require(MVN)
+```
+
+- Dados simulados: $e^{X}$, onde $X \sim N(\mu, \sigma^2)$.
+
+```{r, warning=F, message=F, size="large"}
+set.seed(100)
+dados <- tibble(x1 = exp(rnorm(100, 2, 5)),
+                x2 = exp(rnorm(100, 2.5, 15)),
+                x3 = exp(rnorm(100, 2.5, 15)))
+```
+
+- Verificando normalidade:
+
+```{r}
+mvn(dados)[1:2]
+```
+
+## Transformação - $ln$
+
+```{r}
+dados_transf <- dados %>% 
+  mutate_all(log)
+
+mvn(dados_transf)[1:2]
+```
+
+## Situação 2
+
+Simulando valores aleatórios de $X \sim \chi^2_\nu$
+
+```{r}
+dados <- tibble(x1 = rchisq(100, 15),
+                x2 = rchisq(100, 300),
+                x3 = rchisq(100, 72))
+
+mvn(dados)[1:2]
+```
+
+## Transformação - $\sqrt{X}$
+
+Aplicando a raiz quadrada sobre as variáveis:
+
+```{r}
+dados_transf <- dados %>% 
+  mutate_all(sqrt) 
+
+mvn(dados_transf)[1:2]
+```
+
+## Situação 3
+
+Gerando valores aleatórios de $X \sim Gama(\alpha, \beta)$.
+
+```{r}
+dados <- tibble(x1 = rgamma(500, 10, 50),
+                x2 = rgamma(500, 75, 5),
+                x3 = rgamma(500, 100, 2))
+
+mvn(dados)[1:2]
+```
+
+## Transformação - BoxCox
+
+- Transformação nos dados em caso de assimetria. 
+- Baseado na variação do parâmetro $\lambda$.
+
+A transformação dos dados é dada por:
+
+$$Y = \dfrac{X^{\lambda} - 1}{\lambda}$$
+
+- Estimação de $\lambda$ - máxima verossimilhança.
+
+## Transformação - BoxCox
+
+```{r, warning=FALSE, message=FALSE}
+require(car)
+
+p <- powerTransform(dados) # Estimação de Lambda
+
+dados_transf <- dados %>% 
+  mutate(x1 = bcPower(x1, p$lambda[1]),
+         x2 = bcPower(x2, p$lambda[2]),
+         x3 = bcPower(x3, p$lambda[3]))
+
+mvn(dados_transf)[1:2]
+```
+
+## Outro exemplo - starwars
+
+- Colunas numéricas do dataset `starwars`: altura, massa e ano de nascimento antes da batalha de Yavin (onde a primeira estrela da morte foi destruída)
+
+```{r}
+dados <- starwars %>% 
+  select_if(is.numeric) %>% 
+  filter_all(all_vars(!is.na(.)))
+
+mvn(dados)[1:2]
+```
+
+## Transformações
+
+- Logaritmo
+
+```{r}
+dados_transf <- dados %>% 
+  mutate_all(log)
+
+mvn(dados_transf)[1:2]
+```
+
+## Transformações
+
+- Raiz quadrada
+
+```{r}
+dados_transf <- dados %>% 
+  mutate_all(sqrt)
+
+mvn(dados_transf)[1:2]
+```
+
+## Transformações
+
+- BoxCox
+
+```{r}
+p <- powerTransform(dados) # Estimação de Lambda
+
+dados_transf <- dados %>% 
+  mutate(height = bcPower(height, p$lambda[1]),
+         mass = bcPower(mass, p$lambda[2]),
+         birth_year = bcPower(birth_year, p$lambda[3]))
+
+mvn(dados_transf)[1:2]
