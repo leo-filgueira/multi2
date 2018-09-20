@@ -11,8 +11,9 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 
 
+<meta name="date" content="2018-11-09" />
 
-<title>Aula 3</title>
+<title>Aula 5 - Multicolinearidade</title>
 
 
 
@@ -67,49 +68,114 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 
 
 <section class="page-header">
-<h1 class="title toc-ignore project-name">Aula 3</h1>
-<h4 class="date project-date">23/08/2018</h4>
+<h1 class="title toc-ignore project-name">Aula 5 - Multicolinearidade</h1>
+<h4 class="date project-date">11/09/18</h4>
 </section>
 
 
 
 <section class="main-content">
-<div id="observacoes-atipicas---o-que-fazer" class="section level2">
-<h2>Observações atípicas - o que fazer?</h2>
-<p>Se uma observação é outlier no caso univariado, provavelmente será outlier no caso multivariado, mas se a observação não é outlier no univariado, não necessariamente não será outlier no caso multivariado. Exemplo: é possível observar pessoas com <span class="math inline">\(1,50m\)</span> a <span class="math inline">\(1,90m\)</span> e com peso de <span class="math inline">\(40kg\)</span> a <span class="math inline">\(120kg\)</span>, o que não é comum é uma pessoa de <span class="math inline">\(1,90m\)</span> pesar <span class="math inline">\(40kg\)</span>.</p>
-<div id="deteccao-de-outlier---caso-bivariado" class="section level3">
-<h3>Detecção de outlier - caso bivariado</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(ggplot2)</code></pre></div>
-<pre><code>Loading required package: ggplot2</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">ggplot</span>(faithful, <span class="kw">aes</span>(waiting, eruptions)) <span class="op">+</span>
-<span class="kw">geom_point</span>() <span class="op">+</span>
-<span class="kw">stat_ellipse</span>()</code></pre></div>
-<p><img src="data:image/png;base64,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" /><!-- --></p>
+<div id="modelo-de-regressao-linear-multiplo" class="section level2">
+<h2>Modelo de Regressão Linear Múltiplo</h2>
+<p>Seja <span class="math inline">\(Y\)</span> uma variável dependente e <span class="math inline">\(X_i\)</span> variáveis independentes. Dado um modelo linear múltiplo: <span class="math display">\[Y = \beta_0 + \beta_1 X_1 + ... + \beta_n X_n\]</span></p>
 </div>
-<div id="deteccao-de-outlier---caso-multivariado" class="section level3">
-<h3>Detecção de outlier - caso multivariado</h3>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">df &lt;-<span class="st"> </span><span class="kw">data.frame</span>(<span class="dt">x1 =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">8</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">4</span>), <span class="dt">x2 =</span> <span class="kw">c</span>(<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">3</span>,<span class="dv">5</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">4</span>,<span class="dv">5</span>,<span class="dv">5</span>),
-<span class="dt">x3 =</span> <span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">3</span>,<span class="dv">8</span>,<span class="dv">5</span>,<span class="dv">5</span>,<span class="dv">5</span>), <span class="dt">x4 =</span> <span class="kw">c</span>(<span class="dv">3</span>,<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">5</span>,<span class="dv">2</span>,<span class="dv">1</span>,<span class="dv">7</span>,<span class="dv">4</span>,<span class="dv">4</span>,<span class="dv">4</span>))
-
-<span class="kw">cor</span>(df) <span class="co"># Matriz de correlação</span></code></pre></div>
-<pre><code>          x1        x2        x3        x4
-x1 1.0000000 0.9214520 0.8553220 0.8941547
-x2 0.9214520 1.0000000 0.9254530 0.9052685
-x3 0.8553220 0.9254530 1.0000000 0.7914936
-x4 0.8941547 0.9052685 0.7914936 1.0000000</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">d2 &lt;-<span class="st"> </span><span class="kw">mahalanobis</span>(df, <span class="dt">center=</span><span class="kw">colMeans</span>(df),<span class="dt">cov=</span><span class="kw">cov</span>(df))
-
-<span class="co">#Se a amostra tiver distribuição aproximadamente normal</span>
-<span class="co"># a distância de mahalanobis terá distribuição</span>
-<span class="co">#qui-quadrada com g = (número de variaveis da amostra) graus de liberdade.</span>
-d2</code></pre></div>
-<pre><code> [1] 6.3040841 4.7731721 2.3674093 4.9064417 1.0433109 6.0088335 4.5807909
- [8] 4.1387594 0.7264117 1.1507864</code></pre>
-<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">qchisq</span>(.<span class="dv">975</span>, <span class="kw">ncol</span>(df)) <span class="co">#distância acima do percentil 95 indica outlier.</span></code></pre></div>
-<pre><code>[1] 11.14329</code></pre>
-<p>A função <code>mahalanobis</code> retorna um vetor de tamanho <code>nrow(df)</code>. Os elementos do vetor que são maiores que o quantil da qui-quadrado representam as observações atípicas.</p>
-<p>Neste exemplo não houve detecção de outlier multivariado usando a distância de Mahalanobis.</p>
+<div id="multicolinearidade" class="section level2">
+<h2>Multicolinearidade</h2>
+<p>Queremos um modelo onde as variáveis independentes sejam pouco correlacionadas entre si e que exista uma correlação alta entre as variáveis independentes e a variável dependente.</p>
+<p>A multicolinearidade ocorre quando qualquer variável independente é altamente correlacionada com o conjunto de outras variáveis independentes.</p>
 </div>
+<div id="efeitos-da-multicolinearidade" class="section level2">
+<h2>Efeitos da multicolinearidade</h2>
+<p>Sejam <span class="math inline">\(X_1\)</span>(<span class="math inline">\(M[,1]\)</span>) e <span class="math inline">\(X_2\)</span>(<span class="math inline">\(M[,2]\)</span>) duas variáveis com correlação igual a <span class="math inline">\(1\)</span>, essa singularidade não permite estimar os dois parâmetros. # Exemplo:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">M=<span class="kw">matrix</span>(<span class="kw">c</span>(<span class="dv">1</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">2</span>,<span class="dv">4</span>,<span class="dv">8</span>,<span class="dv">3</span>,<span class="dv">6</span>,<span class="dv">12</span>,<span class="dv">5</span>,<span class="dv">10</span>,<span class="dv">1</span>),<span class="dt">ncol=</span><span class="dv">3</span>,<span class="dt">nrow=</span><span class="dv">4</span>, <span class="dt">byrow =</span> T)
+M</code></pre></div>
+<pre><code>##      [,1] [,2] [,3]
+## [1,]    1    2    4
+## [2,]    2    4    8
+## [3,]    3    6   12
+## [4,]    5   10    1</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">cor</span>(M)</code></pre></div>
+<pre><code>##            [,1]       [,2]       [,3]
+## [1,]  1.0000000  1.0000000 -0.3159813
+## [2,]  1.0000000  1.0000000 -0.3159813
+## [3,] -0.3159813 -0.3159813  1.0000000</code></pre>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(M[,<span class="dv">3</span>]<span class="op">~</span>M[,<span class="dv">1</span>]<span class="op">+</span>M[,<span class="dv">2</span>])</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = M[, 3] ~ M[, 1] + M[, 2])
+## 
+## Coefficients:
+## (Intercept)       M[, 1]       M[, 2]  
+##      8.6857      -0.8857           NA</code></pre>
+<p>Agora observando a correlação das variáveis <span class="math inline">\((M[,1])\)</span> e <span class="math inline">\((M[,3])\)</span>, percebemos que é a correlação é baixa. Logo, não acreditamos que <span class="math inline">\((M[,3])\)</span> irá explicar a variável resposta <span class="math inline">\((M[,1])\)</span>.</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">lm</span>(M[,<span class="dv">1</span>]<span class="op">~</span>M[,<span class="dv">2</span>]<span class="op">+</span>M[,<span class="dv">3</span>])</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = M[, 1] ~ M[, 2] + M[, 3])
+## 
+## Coefficients:
+## (Intercept)       M[, 2]       M[, 3]  
+##   4.441e-16    5.000e-01    1.411e-17</code></pre>
+</div>
+<div id="simulacao" class="section level2">
+<h2>Simulação</h2>
+<p>Primeiro simularemos as variáveis independentes:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">require</span>(MASS)
+<span class="kw">require</span>(clusterGeneration)
+<span class="kw">set.seed</span>(<span class="dv">20</span>)
+num.vars&lt;-<span class="dv">4</span>
+num.obs&lt;-<span class="dv">30</span>
+cov.mat&lt;-<span class="kw">genPositiveDefMat</span>(num.vars,<span class="dt">covMethod=</span><span class="st">&quot;unifcorrmat&quot;</span>)<span class="op">$</span>Sigma
+X&lt;-<span class="kw">mvrnorm</span>(num.obs,<span class="kw">rep</span>(<span class="dv">0</span>,num.vars),<span class="dt">Sigma=</span>cov.mat)
+<span class="kw">print</span>(<span class="kw">cor</span>(X), <span class="dt">digits =</span> <span class="dv">1</span>)</code></pre></div>
+<pre><code>##      [,1] [,2] [,3] [,4]
+## [1,]  1.0  0.6 -0.5  0.9
+## [2,]  0.6  1.0 -0.5  0.5
+## [3,] -0.5 -0.5  1.0 -0.7
+## [4,]  0.9  0.5 -0.7  1.0</code></pre>
+<p>Agora simularemos a variável dependente como uma combinação linear das variáveis independentes:</p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r"><span class="kw">set.seed</span>(<span class="dv">2</span>)
+parms&lt;-<span class="kw">runif</span>(num.vars,<span class="op">-</span><span class="dv">10</span>,<span class="dv">10</span>)
+y&lt;-X <span class="op">%*%</span><span class="st"> </span><span class="kw">matrix</span>(parms) <span class="op">+</span><span class="st"> </span><span class="kw">rnorm</span>(num.obs,<span class="dt">sd=</span><span class="dv">2</span>)</code></pre></div>
+<p>Ajustando o modelo: <span class="math display">\[Y = \beta_0 + \beta_1 X_1 + \beta_2 X_2 + \beta_3 X_3 + \beta_4 X_4\]</span></p>
+<div class="sourceCode"><pre class="sourceCode r"><code class="sourceCode r">mod1 &lt;-<span class="st"> </span><span class="kw">lm</span>(y <span class="op">~</span><span class="st"> </span>X[,<span class="dv">1</span>]<span class="op">+</span>X[,<span class="dv">2</span>]<span class="op">+</span>X[,<span class="dv">3</span>]<span class="op">+</span>X[,<span class="dv">4</span>])
+
+<span class="kw">summary</span>(mod1)</code></pre></div>
+<pre><code>## 
+## Call:
+## lm(formula = y ~ X[, 1] + X[, 2] + X[, 3] + X[, 4])
+## 
+## Residuals:
+##     Min      1Q  Median      3Q     Max 
+## -4.7476 -0.8732  0.2273  1.5432  3.2699 
+## 
+## Coefficients:
+##             Estimate Std. Error t value Pr(&gt;|t|)    
+## (Intercept)   0.4505     0.4573   0.985    0.334    
+## X[, 1]       -4.3579     4.1721  -1.045    0.306    
+## X[, 2]        3.7716     0.7342   5.137 2.61e-05 ***
+## X[, 3]        0.6487     1.4254   0.455    0.653    
+## X[, 4]       -9.0009     5.3571  -1.680    0.105    
+## ---
+## Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+## 
+## Residual standard error: 2.416 on 25 degrees of freedom
+## Multiple R-squared:  0.9786, Adjusted R-squared:  0.9751 
+## F-statistic: 285.2 on 4 and 25 DF,  p-value: &lt; 2.2e-16</code></pre>
+<p>Para modelos multiplos, olhamos o ‘’Adjusted R-squared’’ para sabermos o quanto o modelo ajustado explica a variável dependente.</p>
+</div>
+<div id="avaliacao-da-multicolinearidade" class="section level2">
+<h2>Avaliação da multicolinearidade</h2>
+<p>Uma maneira de encontrar colinearidade entre as variáveis é calculando uma matriz de correlação das variáveis independentes. A presença de correlação alta (<span class="math inline">\(0,9\)</span> ou maior) é uma das indicações de colinearidade.</p>
+</div>
+<div id="como-detectar-a-multicolinearidade" class="section level2">
+<h2>Como detectar a multicolinearidade?</h2>
+<ol style="list-style-type: decimal">
+<li><p>Coeficiente de correlação</p></li>
+<li><p>Determinante da matriz de correlação</p></li>
+<li><p>Autovalores</p></li>
+<li><p>Tolerância/VIF</p></li>
+</ol>
 </div>
 </section>
 

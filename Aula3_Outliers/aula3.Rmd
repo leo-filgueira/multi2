@@ -43,4 +43,6 @@ d2
 qchisq(.975, ncol(df)) #distância acima do percentil 95 indica outlier.
 ```
 
+A função `mahalanobis` retorna um vetor de tamanho `nrow(df)`. Os elementos do vetor que são maiores que o quantil da qui-quadrado representam as observações atípicas.
+
 Neste exemplo não houve detecção de outlier multivariado usando a distância de Mahalanobis.
