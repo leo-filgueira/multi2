@@ -1,0 +1,10 @@
+---
+title: "Aula 6 - Árvores"
+date: "20/09/18"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+### Pacotes Utilizados
