@@ -7,4 +7,101 @@ output:
     highlight: github
 ---
 
-### Pacotes Utilizados
+### PACOTES UTILIZADOS
+
+```{r, warning = F, message=F}
+if(!require(rpart))install.packages("rpart")
+if(!require(rpart.plot))install.packages("rpart.plot")
+if(!require(dplyr))install.packages("dplyr")
+if(!require(rattle))install.packages("rattle")
+
+library(rpart)       #Construção da Árvore
+library(rpart.plot)  #Visualização da Árvore
+library(dplyr)
+library(rattle)
+```
+
+
+### DEFINIÇÃO DOS DADOS
+
+```{r}
+data("ptitanic")   #(do pacote rpart.plot)
+glimpse(ptitanic)  # Resumo dos Dados
+
+```
+
+### DEFINIÇÃO E VISUALIZAÇÃO DO MODELO (pacote rpart e rpart.plot)
+
+```{r}
+
+titanic_model <- rpart(formula = survived ~ ., data = ptitanic,                        method = "class") 
+
+rpart.plot(x = titanic_model, yesno = 2,            type = 0, extra = 2)
+
+```
+
+### EXERCÍCIO
+
+Considerações do Modelo: Não é masculino e não é da segunda classe.
+Classificador: Sobrevivente (Prob= 93%)
+
+
+```{r, warning = F, message=F}
+ptitanic %>%    filter(sex=="female") %>%    filter(pclass == "2nd") %>%     filter(age==28) %>%    filter(sibsp == 1) %>%   filter(parch == 2)
+
+```
+
+Não tem ninguém com esse caso.
+
+
+
+> Quantas mulheres da 1a. ou 2a. classe que sobreviveram/não ?
+
+```{r, warning = F, message=F}
+tab1=ptitanic %>%    filter(sex=="female") %>%   filter(pclass != "3rd") %>%   group_by(survived) %>%   summarise(freq=n()) %>%   mutate(freqr=freq/sum(freq))
+
+total=data.frame(survived="total", freq=sum(tab1$freq), freqr=1) 
+
+tab1 = bind_rows(tab1,total)  
+
+knitr::kable(tab1, format = "pandoc",              caption = "Mulheres da 1a. ou 2a. classe",              digits = 2)
+```
+
+### MODELANDO A PARTIR USANDO DADOS DE TREINO
+
+
+```{r}
+n <- nrow(ptitanic)  
+n_train <- round(0.80 * n)  # 80% das linhas como dados treino
+
+set.seed(123) 
+train_indices <- sample(1:n, n_train) #vetor treino
+
+titanic_train <- ptitanic[train_indices, ]   #Subconjunto Treinamento
+titanic_train <- ptitanic[-train_indices, ]  #Exclusão de índices  
+
+
+```
+
+### MODELO 
+
+```{r}
+titanic_model <- rpart(formula = survived~., data = titanic_train,                        method = "class")  
+
+                 
+ print(titanic_model)
+
+```
+
+> Melhorando a Visualização do Modelo (Transformando em Árvore)
+
+◘ Sem mostrar as probabilidades
+```{r}
+rpart.plot(x = titanic_model,            yesno = 2, type = 0, extra = 2) 
+```
+
+◘ Identificando as probabilidades
+```{r}
+fancyRpartPlot(titanic_model)
+```
+
