@@ -44,6 +44,9 @@ Comparar com a regressão logística
 library(rpart.plot) 
 library(dplyr) 
 library(rpart) 
+library(rattle)
+library(caret)
+library(Metrics)
 
 dados=data("ptitanic")  
 glimpse(ptitanic)
@@ -72,4 +75,61 @@ titanic_test <- ptitanic[-train_indices, ]
 ```{r}
 titanic_model <- rpart(formula = survived~., 
                 data = titanic_train,method = "class") 
+
+print(titanic_model)
+```
+
+### ARVORE 1 
+```{r}
+rpart.plot(x = titanic_model, yesno = 2, type = 0, extra = 2) 
+``` 
+### ARVORE 2 
+```{r}
+fancyRpartPlot(titanic_model)
+```
+### COMPARANDO COM REGRESSÃO LOGÍSTICA
+```{r}
+modelolog=glm(survived~. ,  data = titanic_train, family = binomial) 
+anova(modelolog, test="Chisq")
+```
+
+### RAZÃO DE CHANCE (REG LOG)
+```{r}
+exp(coef(modelolog))
+```
+## PREVISAO E ACURACIA 
+
+### Previsão
+```{r}
+head(predict(titanic_model, titanic_test))
+
+head(predict(titanic_model, titanic_test, type="class"))
+```
+### Acurácia
+```{r}
+class_prediction=predict(titanic_model, titanic_test, type="class")
+confusionMatrix(data = class_prediction, reference = titanic_test$survived) 
+```
+
+### COMPARAÇÃO 
+```{r}
+model1 <- rpart(formula = survived ~ ., data = titanic_train, method = "class", parms = list(split = "gini")) 
+
+model2 <- rpart(formula = survived ~ ., data = titanic_train, method = "class",                        parms = list(split = "information")) 
+
+pred1 <- predict(object = model1,               newdata = titanic_test,              type = "class")      
+```
+
+Gerando predições no conjunto de teste usando o modelo de Informação pred2 <- predict(object = model2,               newdata = titanic_test,              type = "class")
+
+```{r}
+pred2 <- predict(object = model2,newdata = titanic_test,type = "class") 
+
+Metrics::ce(actual = titanic_test$survived,     predicted = pred1)
+
+Metrics::ce(actual = titanic_test$survived,     predicted = pred2)
+
+Metrics::accuracy(actual = titanic_test$survived,     predicted = pred1)
+
+Metrics::accuracy(actual = titanic_test$survived,     predicted = pred2)
 ```
