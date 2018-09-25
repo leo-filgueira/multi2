@@ -1,0 +1,75 @@
+---
+title: "Aula 7 - Árvores/Medidas de Avaliação"
+date: "25/09/18"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+#Calculo das medidas de Avaliação
+
+|          |           | Referência |     | TOTAL |
+|----------|-----------|------------|-----|-------|
+|          |           | R$\bar{S}$ | R$S$|       |
+| Predição | P$\bar{S}$| 138        | 33  | 171   |
+|          | P$S$      | 30         | 61  | 91    |
+|          | TOTAL     | 168        | 94  |  262  | 
+
+Calculos das medidas de acurácia e sensibilidade:
+
+Acurácia = $\frac{\#(PS \cap RS) \cup \#(P\bar{S} \cap R\bar{S})}{\# \Omega} = \frac{138+61}{262}$ = 0,76
+
+Sensibilidade = $\frac{\#(P\bar{S} \cap R\bar{S})}{\#(R\bar{S})} = \frac{138}{168} = 0,821$
+
+Especificidade = $\frac{\#(PS \cap RS)}{\#(RS)} = \frac{61}{94} = 0,649$
+
+Acurácia balanceada = $\frac{\hbox{sensibilidade} + \hbox{especificidade}}{2} = 0,735$
+
+
+# Trabalho
+
+Utilizando o banco de dados TITANIC:
+
+Dividir em conjunto treino e teste
+Ajustar a árvore pro conjunto treino
+Calcular as medidas
+Comparar com a regressão logística
+
+```{r, warning=FALSE, message=F}
+library(rpart.plot) 
+library(dplyr) 
+library(rpart) 
+
+dados=data("ptitanic")  
+glimpse(ptitanic)
+```
+
+### DIVIDINDO EM TREINO E TESTE
+```{r}
+set.seed(2006)
+
+n <- nrow(ptitanic)
+n_train <- round(0.80 * n)
+```
+### VETOR DE INDICES USANDO 80 \% DOS DADOS
+```{r}
+train_indices <- sample(1:n, n_train) 
+```
+###SUBCONJUNTO DE TREINAMENTO
+```{r}
+titanic_train <- ptitanic[train_indices, ]
+```
+### EXCLUINDO SUBCONJUNTO DE TREINAMENTO
+```{r}
+titanic_test <- ptitanic[-train_indices, ]
+```
+### MODELO 
+```{r}
+titanic_model <- rpart(formula = survived~., 
+                data = titanic_train,method = "class") 
+```
