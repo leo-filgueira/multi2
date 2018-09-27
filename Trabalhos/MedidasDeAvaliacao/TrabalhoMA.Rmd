@@ -1,0 +1,140 @@
+---
+title: "Trabalho 3 - Medidas de Avaliação"
+date: "27/09/18"
+output:
+  prettydoc::html_pretty:
+    theme: architect
+    highlight: github
+---
+
+> Tarefa:
+
+1. Dividir em conjunto de dados treino e teste
+
+2. Ajustar a árvore pro conjunto treino
+
+3. Calcular as medidas
+
+4. Comparar com a regressão logística
+
+> Pacotes Necessários 
+
+```{r, warning=FALSE, message=F}
+library(rpart.plot) 
+library(dplyr) 
+library(rpart) 
+library(rattle)
+library(caret)
+library(Metrics)
+```
+
+> Definindo os Dados
+
+O banco de dados utilizado neste trabalho é o titanic e se encontra no pacote _rpart.plot_ e apresenta as seguintes variáveis:
+
+1. Pclass:   Classe de Passageiros (1st, 2st, 3rd)
+2. Survived: Situação de sobrevivência do passageiro (Died ou Survived)
+3. Sex:      Sexo do indivíduo (Male ou Female)
+4. Age:      Idade do indivíduo (Em anos)
+5. Sibsp:    Número de irmãos ou cônjuge a bordo (0-8)
+6. Parch:    Número de pais ou filhos a bordo (0-6)
+
+Total de Observações: 1306
+
+```{r}
+data("ptitanic")  
+glimpse(ptitanic)
+
+dados <- ptitanic %>%  
+         filter_all(all_vars(!is.na(.)))
+```
+
+
+A seguir, selecionaremos $80\%$ das observações da base para treinamento do modelo. Os outros $20\%$ serão utilizados para testar o modelo construído. 
+
+```{r}
+set.seed(2006)
+
+n <- nrow(dados)
+n_train <- round(0.80 * n)
+
+train_indices <- sample(1:n, n_train) #Índices selecionados
+
+titanic_train <- dados[train_indices, ] #Subconjunto de treino
+
+titanic_test <- dados[-train_indices, ] #Subconjunto Teste (Dados excluindo o treino)
+```
+
+> Árvore de Classificação 
+
+Agora, vamos ajustar um modelo com a função `rpart` , do pacote _rpart_ citado anteriormente.A árvore classificará a variável Survived com base em todas as outras colunas de titanic_train.
+
+
+```{r}
+titanic_model <- rpart(formula = survived~., 
+                data = titanic_train,method = "class") 
+
+print(titanic_model)
+```
+
+Após o ajuste do modelo, vamos visualizar a árvore construída.
+
+```{r}
+rpart.plot(x = titanic_model, yesno = 2, type = 0, extra = 2) 
+``` 
+
+> Regressão Logística
+
+A seguir, ajustaremos um modelo de regressão logística para prever a variável Survived, com base em todas as outras colunas do titanic_train . 
+
+```{r}
+modelolog=glm(survived~. ,  data = titanic_train, family = binomial) 
+anova(modelolog, test="Chisq")
+
+print(modelolog)
+```
+
+Adotando um nível de significância de $5\%$ , é possível afirmar que apenas a variável _parch_ não é significativa no modelo.
+
+A partir do modelo de regressão logística ajustado, vamos calcular a razão de chances:
+
+```{r}
+exp(coef(modelolog))
+```
+
+> Previsão
+
+- Árvore de Classificação
+    ```{r}
+    head(predict(titanic_model, titanic_test))
+    
+    head(predict(titanic_model, titanic_test, type="class"))
+    
+    
+    ```
+    
+- Regressão Logística
+    ```{r}
+    head(predict(modelolog, titanic_test))
+    
+    ```
+
+> Medida de Avaliação: Acurácia
+
+Sabendo que a acurácia consiste na proporção de acertos, vamos analisar o acerto do modelo utilizando o pacote _caret_ . 
+
+```{r}
+class_prediction=predict(titanic_model, titanic_test, type="class")
+confusionMatrix(data = class_prediction, reference = titanic_test$survived) 
+```
+
+```{r}
+model_predict <- function(pred, t) ifelse (pred>t, TRUE, FALSE)
+
+class_predictionGLM=predict(modelolog, titanic_test, type='response')
+
+confusionMatrix(data =  as.numeric(class_predictionGLM>0.5), reference=titanic_test$survived) 
+```
+
+
+> Conclusão 
