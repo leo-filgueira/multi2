@@ -45,8 +45,6 @@ Total de Observações: 1306
 data("ptitanic")  
 glimpse(ptitanic)
 
-dados <- ptitanic %>%  
-         filter_all(all_vars(!is.na(.)))
 ```
 
 
@@ -55,14 +53,14 @@ A seguir, selecionaremos $80\%$ das observações da base para treinamento do mo
 ```{r}
 set.seed(2006)
 
-n <- nrow(dados)
+n <- nrow(ptitanic)
 n_train <- round(0.80 * n)
 
 train_indices <- sample(1:n, n_train) #Índices selecionados
 
-titanic_train <- dados[train_indices, ] #Subconjunto de treino
+titanic_train <- ptitanic[train_indices, ] #Subconjunto de treino
 
-titanic_test <- dados[-train_indices, ] #Subconjunto Teste (Dados excluindo o treino)
+titanic_test <- ptitanic[-train_indices, ] #Subconjunto Teste (Dados excluindo o treino)
 ```
 
 > Árvore de Classificação 
@@ -88,8 +86,8 @@ rpart.plot(x = titanic_model, yesno = 2, type = 0, extra = 2)
 A seguir, ajustaremos um modelo de regressão logística para prever a variável Survived, com base em todas as outras colunas do titanic_train . 
 
 ```{r}
-modelolog=glm(survived~. ,  data = titanic_train, family = binomial) 
-anova(modelolog, test="Chisq")
+modelolog <- glm(survived~. ,  data = titanic_train, family = binomial) 
+anova(modelolog, test = "Chisq")
 
 print(modelolog)
 ```
@@ -115,7 +113,7 @@ exp(coef(modelolog))
     
 - Regressão Logística
     ```{r}
-    head(predict(modelolog, titanic_test))
+    head(predict(modelolog, titanic_test, type = "response", na.action = na.omit))
     
     ```
 
@@ -124,16 +122,16 @@ exp(coef(modelolog))
 Sabendo que a acurácia consiste na proporção de acertos, vamos analisar o acerto do modelo utilizando o pacote _caret_ . 
 
 ```{r}
-class_prediction=predict(titanic_model, titanic_test, type="class")
+class_prediction <- predict(titanic_model, titanic_test, type="class")
 confusionMatrix(data = class_prediction, reference = titanic_test$survived) 
 ```
 
 ```{r}
 model_predict <- function(pred, t) ifelse (pred>t, TRUE, FALSE)
 
-class_predictionGLM=predict(modelolog, titanic_test, type='response')
+class_predictionGLM <- predict(modelolog, titanic_test, type='response', na.action = na.omit)
 
-confusionMatrix(data =  as.numeric(class_predictionGLM>0.5), reference=titanic_test$survived) 
+confusionMatrix(data = model_predict(class_predictionGLM, 0.5), reference=titanic_test$survived) 
 ```
 
 
