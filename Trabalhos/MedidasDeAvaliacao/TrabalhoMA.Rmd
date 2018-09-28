@@ -1,21 +1,30 @@
 ---
 title: "Trabalho 3 - Medidas de Avaliação"
 date: "27/09/18"
+author: Camila Simões, Jessyka Goltara, Leonardo Filgueira
 output:
   prettydoc::html_pretty:
     theme: architect
     highlight: github
 ---
 
+<style>
+  .col2 {
+    columns: 2 200px;         /* number of columns and width in pixels*/
+    -webkit-columns: 2 200px; /* chrome, safari */
+    -moz-columns: 2 200px;    /* firefox */
+  }
+</style>
+
 > Tarefa:
 
-1. Dividir em conjunto de dados treino e teste
+1. Dividir em conjunto de dados treino e teste.
 
-2. Ajustar a árvore pro conjunto treino
+2. Ajustar a árvore pro conjunto treino.
 
-3. Calcular as medidas
+3. Calcular as medidas.
 
-4. Comparar com a regressão logística
+4. Comparar com a regressão logística.
 
 > Pacotes Necessários 
 
@@ -39,7 +48,12 @@ O banco de dados utilizado neste trabalho é o titanic e se encontra no pacote _
 5. Sibsp:    Número de irmãos ou cônjuge a bordo (0-8)
 6. Parch:    Número de pais ou filhos a bordo (0-6)
 
-Total de Observações: 1306
+```{r echo = F}
+data("ptitanic")
+```
+
+
+Total de Observações: `r nrow(ptitanic)`.
 
 ```{r}
 data("ptitanic")  
@@ -107,32 +121,67 @@ exp(coef(modelolog))
     head(predict(titanic_model, titanic_test))
     
     head(predict(titanic_model, titanic_test, type="class"))
-    
-    
     ```
     
 - Regressão Logística
     ```{r}
-    head(predict(modelolog, titanic_test, type = "response", na.action = na.omit))
-    
+    head(predict(modelolog, titanic_test, type = "response"))
     ```
 
-> Medida de Avaliação: Acurácia
+> Medidas de Avaliação
 
-Sabendo que a acurácia consiste na proporção de acertos, vamos analisar o acerto do modelo utilizando o pacote _caret_ . 
+Sabendo que a acurácia consiste na proporção de acertos, vamos analisar o acerto do modelo utilizando o pacote _caret_. Além disso, encontraremos a matriz de confusão dos dois modelos e verificaremos a especificidade e sensitividade dos ajustes.
 
 ```{r}
 class_prediction <- predict(titanic_model, titanic_test, type="class")
-confusionMatrix(data = class_prediction, reference = titanic_test$survived) 
+mc_arvore <- confusionMatrix(data = class_prediction, reference = titanic_test$survived) 
+
+mc_arvore
 ```
+
+Temos que remover os valores `NA`s na predição, e, para o bom funcionamento de `confusionMatrix`, também removeremos as observações correspondentes na base de teste. Usamos a função `factor`, também por uma exigência da função que calcula a acurácia, sendo que o valor `0` representa *died* e o valor `1`, *survived*.
 
 ```{r}
-model_predict <- function(pred, t) ifelse (pred>t, TRUE, FALSE)
+class_predictionGLM <- predict(modelolog, titanic_test, type = 'response') %>% 
+  round() %>% 
+  factor(labels = c("died", "survived"))
 
-class_predictionGLM <- predict(modelolog, titanic_test, type='response', na.action = na.omit)
+val_not_na <- which(!is.na(class_predictionGLM)) 
+class_predictionGLM <- class_predictionGLM[val_not_na]
 
-confusionMatrix(data = model_predict(class_predictionGLM, 0.5), reference=titanic_test$survived) 
+referencia <- titanic_test$survived[val_not_na]
+
+mc_glm <- confusionMatrix(data = class_predictionGLM, reference = referencia) 
+
+mc_glm
 ```
 
-
 > Conclusão 
+
+Pela matriz de confusão, podemos perceber que o modelo de árvore de classificação, para esta base, tem um maior número de acertos, em relação à regressão logística.
+
+<div class="col2">
+```{r}
+mc_arvore$table
+mc_glm$table
+```
+</div>
+
+Observando a tabela abaixo, o modelo de árvore de classificação é o melhor, isso de acordo com a acurácia e sensitividade. Por outro lado, considerando a especificidade, podemos ver que a regressão logística se saiu melhor. 
+
+```{r}
+arvore <- c(mc_arvore$overall[1], mc_arvore$byClass[1:2])
+reg_log <- c(mc_glm$overall[1], mc_glm$byClass[1:2])
+
+compara <- data.frame(arvore, reg_log) %>% 
+  tibble::rownames_to_column("Medida") %>% 
+  mutate(Medida = c("Acurácia", "Sensitividade", "Especificidade")) %>% 
+  mutate_if(is.numeric, funs(round(., 2)))
+
+DT::datatable(compara, rownames = F, extensions = 'Buttons', colnames = c('Árvore' = 'arvore', 'Regressão logística' = 'reg_log'), options = list(
+    dom = 'Bfrtip',
+    buttons = c('copy', 'csv', 'excel', 'pdf', 'print')
+  ))
+```
+
+Por fim, nestas circunstâncias, escolheríamos a árvore de classificação para prever a sobreviência ou morte dos passageiros.
