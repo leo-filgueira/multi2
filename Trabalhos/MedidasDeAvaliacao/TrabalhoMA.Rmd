@@ -39,7 +39,7 @@ O banco de dados utilizado neste trabalho é o titanic e se encontra no pacote _
 5. Sibsp:    Número de irmãos ou cônjuge a bordo (0-8)
 6. Parch:    Número de pais ou filhos a bordo (0-6)
 
-Total de Observações: 1306
+Total de Observações: 1309
 
 ```{r}
 data("ptitanic")  
