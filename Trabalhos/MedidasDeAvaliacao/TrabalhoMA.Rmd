@@ -52,7 +52,6 @@ O banco de dados utilizado neste trabalho é o titanic e se encontra no pacote _
 data("ptitanic")
 ```
 
-
 Total de Observações: `r nrow(ptitanic)`.
 
 ```{r}
@@ -60,7 +59,6 @@ data("ptitanic")
 glimpse(ptitanic)
 
 ```
-
 
 A seguir, selecionaremos $80\%$ das observações da base para treinamento do modelo. Os outros $20\%$ serão utilizados para testar o modelo construído. 
 
@@ -80,7 +78,6 @@ titanic_test <- ptitanic[-train_indices, ] #Subconjunto Teste (Dados excluindo o
 > Árvore de Classificação 
 
 Agora, vamos ajustar um modelo com a função `rpart` , do pacote _rpart_ citado anteriormente.A árvore classificará a variável Survived com base em todas as outras colunas de titanic_train.
-
 
 ```{r}
 titanic_model <- rpart(formula = survived~., 
