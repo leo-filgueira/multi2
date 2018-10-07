@@ -37,7 +37,7 @@ candidatos <- candidatos %>%
 candidatos
 tentativa <- candidatos[, -(1:2)]
 
-  modelo <- rpart(cassado ~ DS_GENERO, 
+modelo <- rpart(cassado ~ DS_GENERO, 
                 data = tentativa, method = "class")
 rpart.plot(x = modelo, yesno = 2,
            type = 0, extra = 2)
