@@ -58,12 +58,38 @@ $(document).ready(function () {
 <div id="table-of-contents">
     <h2><a href="#content">Classificando IDHM</a></h2>
     <div id="text-table-of-contents">
-      
+      <ul>
+      <li><a href="#introducao">INTRODUÇÃO</a><ul>
+      <li><a href="#contextualizacao-do-problema">CONTEXTUALIZAÇÃO DO PROBLEMA</a></li>
+      </ul></li>
+      <li><a href="#dados">DADOS</a><ul>
+      <li><a href="#metodologia">METODOLOGIA</a></li>
+      </ul></li>
+      </ul>
     </div>
 </div>
 
 <div id="main">
-
+<div id="introducao" class="section level1">
+<h1>INTRODUÇÃO</h1>
+<p>De acordo com o Programa das Nações Unidas para o Desenvolvimento <a href="http://www.br.undp.org/content/brazil/pt/home/idh0/conceitos/o-que-e-desenvolvimento-humano.html">(PNUD)</a>, o conceito de desenvolvimento humano consiste em avaliar as oportunidades e capacidades individuais da população. Ao pensar em desenvolvimento humano, pode ser intuitivo associá-lo imediatamente ao ponto de vista econômico, porém a ideia é considerar também aspectos sociais, culturais e políticos.</p>
+<p>A proposta do Índice de Desenvolvimento Humano tem por objetivo oferecer uma alternativa à análise do progresso social a partir, do ponto de vista econômico, utilizando o Produto Interno Bruto (PIB). Embora, seja uma nova possibilidade de mensurar o desenvolvimento, o índice não contempla a representação da “felicidade”, ou seja, não considera a pessoa na sua individualidade, mas seu comportamento em relação a um grupo (sociedade).</p>
+<p>Sob a perspectiva municipal, foi adaptado o conceito de Índice de Desenvolvimento Humano para as cidades (IDHM). O indicador apresenta a mesma ideia do IDH de forma geral.</p>
+<div id="contextualizacao-do-problema" class="section level2">
+<h2>CONTEXTUALIZAÇÃO DO PROBLEMA</h2>
+<p>Os municípios do estado do Rio de Janeiro apresentam comportamentos diferentes. Algumas diversidades podem ser observadas de acordo com a posição geográfica, a condição social, cultural, histórica, econômica, entre outras. Esses atributos podem ser responsáveis por diferentes níveis de desenvolvimento. Portanto, este trabalho consiste em classificar o IDHM a partir de informações municipais.</p>
+</div>
+</div>
+<div id="dados" class="section level1">
+<h1>DADOS</h1>
+<p>O banco de dados é formado por 93 registros, referentes aos 93 municípios do estado do Rio de Janeiro. As informações foram extraídas do <a href="http://www.atlasbrasil.org.br/2013/pt/consulta/">Atlas Brasil</a> . Inicialmente, foram coletadas 225 variáveis. Em seguida, também foram obtidas informações sobre as mesorregiões correspondentes aos municípios.</p>
+<div id="metodologia" class="section level2">
+<h2>METODOLOGIA</h2>
+<p>Para obtermos e avaliarmos a classificação do IDHM, a base de dados foi dividida em treino e teste. A base a ser treinada conta com 80% dos municípios. As cidades restantes, que indicam 20% da base de dados, serão utilizadas para teste.</p>
+<!-- Inserir chunk de treino e teste -->
+<p>Para a classificação do IDHM foi utilizada a seguinte técnica de mineração de dados: <strong>árvore de classificação.</strong></p>
+</div>
+</div>
 </div>
 
 
