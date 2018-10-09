@@ -1,6 +1,6 @@
 ---
 title: "Classificando IDHM"
-date: "11/10/2018"
+date: "09/10/2018"
 author: "Camila Simões, Leonardo Filgueira"
 output:
   rmdformats::readthedown:
