@@ -1,7 +1,7 @@
 ---
 title: "Classificando IDHM"
 date: "09/10/2018"
-author: "Camila Simões, Jessyka Goltara, Leonardo Filgueira"
+author: "Camila Simões, Leonardo Filgueira"
 output:
   rmdformats::readthedown:
     highlight: kate
