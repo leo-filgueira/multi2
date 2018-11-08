@@ -2,14 +2,17 @@
 title: "Escalonamento Multidimensional"
 author: "Camila Simões, Jessyka Goltara, Leonardo Filgueira, Beatriz Jardim"
 date: "7 de novembro de 2018"
-output: html_document
+output: 
+  rmdformats::readthedown:
+    code_folding: hide
+    self_contained: true
+    thumbnails: false
+    lightbox: false
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
-
-# Escalonamento Multidimensional
 
 O escalonamento multidimensional é uma técnica de interdependência que permite mapear distâncias entre objetos.
 
@@ -17,41 +20,35 @@ A técnica do Escalonamento Multidimensional é usada para representar espacialmen
 
 A técnica é apropriada para representar graficamente $n$ elementos em um espaço de dimensão menor do que o original, levando-se  em conta  a  distância  ou  a similaridade que os elementos têm entre si.
 
-############# Imagem
+![](emd.png)
 
-## Escalonamento Multidimensional Métrico
+# Escalonamento Multidimensional Métrico
 
-### Modelagem do Escalonamento Multidimensional Métrico
+## Modelagem do Escalonamento Multidimensional Métrico
 
 O escalonamento multidimensional métrico é feito conforme os seguintes passos:
 
-#### Enumerar
+1. Uma configuração inicial é estabelecida para os $n$ objetos em $k$.  dimensões.
 
-Uma configuração inicial é estabelecida para os $n$ objetos em $k$ dimensões.
+2. As distâncias euclidianas entre os objetos são calculadas para a configuração assumida. Seja $d_{ij}$ a distância entre o objeto $i$ e o objeto $j$ para esta configuração.
 
-As distâncias euclidianas entre os objetos são calculadas para a configuração assumida. Seja $d_{ij}$ a distância entre o objeto $i$ e o objeto $j$ para esta configuração.
+3. Uma regressão de $d_{ij}$ em $\delta_{ij}$ é feita onde,como mencionado acima,$\delta_{ij}$ é a distância entre o objeto $i$ e o objeto $j$, de acordo com os dados de entrada. A regressão pode ser linear, polinomial ou monótona.
 
-Uma regressão de $d_{ij}$ em $\delta_{ij}$ é feita onde,como mencionado acima,$\delta_{ij}$ é a distância entre o objeto $i$ e o objeto $j$, de acordo com os dados de entrada. A regressão pode ser linear, polinomial ou monótona.
+4. A qualidade de ajuste entre as distâncias de configuração e as disparidades é medida por uma estatística adequada.
 
-A qualidade de ajuste entre as distâncias de configuração e as disparidades é medida por uma estatística adequada.
+5. As coordenadas de cada objeto são alteradas levemente de tal maneira que o stress é reduzido.
 
-As coordenadas de cada objeto são alteradas levemente de tal maneira que o stress é reduzido.
-
-#### Medidas de adequação do ajuste
-
-#### Enumerar
+### Medidas de adequação do ajuste
 
 Algumas medidas para avaliar o quanto as distâncias derivadas dos dados dissimilaridades se aproximam daqueles originais fornecidas pelos respondentes são:
 
-Stress, Kruskal
+- Stress, Kruskal
 
+$$ STRESS = \sqrt{\frac{\sum_i \sum_j (d_{ij} - \hat{d_{ij}})^2}{{\sum_i \sum_j \hat{d_{ij}}^2}}} $$
 
+- Stress, Young
 
-$$STRESS= \left(\dfrac{\sum_i \sum_j (d_{ij} - \hat{d_{ij}})^2}{\sum_i sum_j \hat{d_{ij}}^2\right)^{1/2}$$
-
-Stress,Young
-
-$$SSTRESS= \left(\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i sum_j \hat{d_{ij}}^4\right)^{1/2}$$
+$$SSTRESS= \sqrt{\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i \sum_j \hat{d_{ij}}^4}}$$
 
 | STRESS | Adequação do Ajuste |
 |:------:|:-------------------:|
@@ -62,11 +59,11 @@ $$SSTRESS= \left(\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i sum_
 |   0\%  |       Perfeito      |
 
 
-### Escalonamento Multidimensional do R
-
-`
+## Escalonamento Multidimensional do R
 
 
-## Escalonamento Multidimensional Não-Métrico
+
+
+# Escalonamento Multidimensional Não-Métrico
 
 Dados de preferência ou percepção quanto à proximidade dos pares que estão sendo avaliados.
