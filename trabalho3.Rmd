@@ -1,6 +1,6 @@
 ---
 title: "Escalonamento Multidimensional"
-author: "Camila Simıes, Jessyka Goltara, Leonardo Filgueira, Beatriz Jardim"
+author: "Camila Sim√µes, Jessyka Goltara, Leonardo Filgueira, Beatriz Jardim"
 date: "7 de novembro de 2018"
 output: 
   rmdformats::readthedown:
@@ -14,33 +14,33 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-O escalonamento multidimensional È uma tÈcnica de interdependÍncia que permite mapear dist‚ncias entre objetos.
+O escalonamento multidimensional √© uma t√©cnica de interdepend√™ncia que permite mapear dist√¢ncias entre objetos.
 
-A tÈcnica do Escalonamento Multidimensional È usada para representar espacialmente uma matriz de proximidades (semelhanÁa ou dissemelhanÁa) entre uma sÈrie de objetos de modo que possam ser mais facilmente visualizados. 
+A t√©cnica do Escalonamento Multidimensional √© usada para representar espacialmente uma matriz de proximidades (semelhan√ßa ou dissemelhan√ßa) entre uma s√©rie de objetos de modo que possam ser mais facilmente visualizados. 
 
-A tÈcnica È apropriada para representar graficamente $n$ elementos em um espaÁo de dimens„o menor do que o original, levando-se  em conta  a  dist‚ncia  ou  a similaridade que os elementos tÍm entre si.
+A t√©cnica √© apropriada para representar graficamente $n$ elementos em um espa√ßo de dimens√£o menor do que o original, levando-se  em conta  a  dist√¢ncia ou a similaridade que os elementos t√™m entre si.
 
 ![](emd.png)
 
-# Escalonamento Multidimensional MÈtrico
+# Escalonamento Multidimensional M√©trico
 
-## Modelagem do Escalonamento Multidimensional MÈtrico
+## Modelagem do Escalonamento Multidimensional M√©trico
 
-O escalonamento multidimensional mÈtrico È feito conforme os seguintes passos:
+O escalonamento multidimensional m√©trico √© feito conforme os seguintes passos:
 
-1. Uma configuraÁ„o inicial È estabelecida para os $n$ objetos em $k$.  dimensıes.
+1. Uma configura√ß√£o inicial √© estabelecida para os $n$ objetos em $k$.  dimens√µes.
 
-2. As dist‚ncias euclidianas entre os objetos s„o calculadas para a configuraÁ„o assumida. Seja $d_{ij}$ a dist‚ncia entre o objeto $i$ e o objeto $j$ para esta configuraÁ„o.
+2. As dist√¢ncias euclidianas entre os objetos s√£o calculadas para a configura√ß√£o assumida. Seja $d_{ij}$ a dist√¢ncia entre o objeto $i$ e o objeto $j$ para esta configura√ß√£o.
 
-3. Uma regress„o de $d_{ij}$ em $\delta_{ij}$ È feita onde,como mencionado acima,$\delta_{ij}$ È a dist‚ncia entre o objeto $i$ e o objeto $j$, de acordo com os dados de entrada. A regress„o pode ser linear, polinomial ou monÛtona.
+3. Uma regress√£o de $d_{ij}$ em $\delta_{ij}$ √© feita onde, como mencionado acima, $d_{ij}$ √© a dist√¢ncia entre o objeto $i$ e o objeto $j$, de acordo com os dados de entrada, e $\delta_{ij}$ √© a c√©lula da matriz, na linha $i$, coluna $j$. A regress√£o pode ser linear, polinomial ou mon√≥tona.
 
-4. A qualidade de ajuste entre as dist‚ncias de configuraÁ„o e as disparidades È medida por uma estatÌstica adequada.
+4. A qualidade de ajuste entre as dist√¢ncias de configura√ß√£o e as disparidades √© medida por uma estat√≠stica adequada.
 
-5. As coordenadas de cada objeto s„o alteradas levemente de tal maneira que o stress È reduzido.
+5. As coordenadas de cada objeto s√£o alteradas levemente de tal maneira que o stress √© reduzido.
 
-### Medidas de adequaÁ„o do ajuste
+### Medidas de adequa√ß√£o do ajuste
 
-Algumas medidas para avaliar o quanto as dist‚ncias derivadas dos dados dissimilaridades se aproximam daqueles originais fornecidas pelos respondentes s„o:
+Algumas medidas para avaliar o quanto as dist√¢ncias derivadas dos dados dissimilaridades se aproximam daqueles originais fornecidas pelos respondentes s√£o:
 
 - Stress, Kruskal
 
@@ -51,10 +51,10 @@ $$ STRESS = \sqrt{\frac{\sum_i \sum_j (d_{ij} - \hat{d_{ij}})^2}{{\sum_i \sum_j 
 $$SSTRESS= \sqrt{\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i \sum_j \hat{d_{ij}}^4}}$$
 
 <center>
-| STRESS | AdequaÁ„o do Ajuste |
+| STRESS | Adequa√ß√£o do Ajuste |
 |:------:|:-------------------:|
 |   20\% |        Pobre        |
-|  10\%  |       Razo·vel      |
+|  10\%  |       Razo√°vel      |
 |   5\%  |         Bom         |
 |  2,5\% |      Excelente      |
 |   0\%  |       Perfeito      |
@@ -62,9 +62,9 @@ $$SSTRESS= \sqrt{\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i \sum
 
 &nbsp;
 
-# Escalonamento Multidimensional N„o-MÈtrico
+# Escalonamento Multidimensional N√£o-M√©trico
 
-Este tipo de escalonamento pode ser utilizado na situaÁ„o em que objetiva-se estudar valores ordinais, e n„o numÈricos.
+Este tipo de escalonamento pode ser utilizado na situa√ß√£o em que objetiva-se estudar valores ordinais, e n√£o num√©ricos.
 
 
 # Escalonamento Multidimensional no R
