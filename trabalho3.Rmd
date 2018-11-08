@@ -45,7 +45,7 @@ se valores numéricos das proximidades forem modificados, porém sem modificar a
 
 ### Modelagem Multidimensional Não-Métrico
 
-Esse  método  propõe  que  as  coordenadas  na representação espacial das proximidades observadas dão origem a distâncias ajustadas, $d_{ij}$, e que estas  distâncias  estão  relacionadas  a  um  conjunto  de  números que chamaremos disparidades, $\hat{d}_{ij},  pela  fórmula:
+Esse  método  propõe  que  as  coordenadas  na representação espacial das proximidades observadas dão origem a distâncias ajustadas, $d_{ij}$, e que estas  distâncias  estão  relacionadas  a  um  conjunto  de  números que chamaremos disparidades, $\hat{d}_{ij}$,  pela  fórmula:
 
 $$d_{ij} = \hat{d}_{ij} + \varepsilon_{ij}$$
 
@@ -117,3 +117,4 @@ plot(ef, p.max = 0.05) # somente os mais significativas
 ## Exercício
 
 Realize o escalonamento multidimensional com a base `swiss`, do R.
+
