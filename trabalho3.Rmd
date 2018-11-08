@@ -79,13 +79,26 @@ $$SSTRESS= \sqrt{\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i \sum
 
 ## Métrico
 
-## Não métrico
-
-```{r, warning=F, message=F}
+```{r warning=FALSE, message=FALSE}
+if(!require(MVar.pt)){install.packages("MVar.pt", repos = "https://cran.fiocruz.br/")}
 if(!require(vegan)){install.packages("vegan", repos = "https://cran.fiocruz.br/")}
-require(vegan)
+require(MVar.pt)
 require(MASS)
+require(vegan)
 ```
+
+```{r}
+dados1 <- read.csv2("distancias.csv", stringsAsFactors = F)
+dados1 <- tibble::column_to_rownames(dados1, "Cidade")
+
+metrico1 <- cmdscale(as.matrix(dados1))
+metrico2 <- isoMDS(as.matrix(dados1))
+
+metrico1
+metrico2
+```
+
+## Não métrico
 
 ```{r}
 dados <- read.csv2("Trabalhos/Trabalho5_MontarAula/naometrico.csv", sep = ",")
