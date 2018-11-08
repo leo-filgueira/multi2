@@ -50,6 +50,7 @@ $$ STRESS = \sqrt{\frac{\sum_i \sum_j (d_{ij} - \hat{d_{ij}})^2}{{\sum_i \sum_j 
 
 $$SSTRESS= \sqrt{\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i \sum_j \hat{d_{ij}}^4}}$$
 
+<center>
 | STRESS | Adequação do Ajuste |
 |:------:|:-------------------:|
 |   20\% |        Pobre        |
@@ -57,13 +58,13 @@ $$SSTRESS= \sqrt{\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i \sum
 |   5\%  |         Bom         |
 |  2,5\% |      Excelente      |
 |   0\%  |       Perfeito      |
+</center>
 
-
-## Escalonamento Multidimensional do R
-
-
-
+&nbsp;
 
 # Escalonamento Multidimensional Não-Métrico
 
-Dados de preferência ou percepção quanto à proximidade dos pares que estão sendo avaliados.
+Este tipo de escalonamento pode ser utilizado na situação em que objetiva-se estudar valores ordinais, e não numéricos.
+
+
+# Escalonamento Multidimensional no R
