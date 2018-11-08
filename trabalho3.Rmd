@@ -4,7 +4,7 @@ author: "Camila Simões, Jessyka Goltara, Leonardo Filgueira, Beatriz Jardim"
 date: "7 de novembro de 2018"
 output: 
   rmdformats::readthedown:
-    code_folding: hide
+    code_folding: show
     self_contained: true
     thumbnails: false
     lightbox: false
@@ -76,3 +76,31 @@ $$SSTRESS= \sqrt{\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i \sum
 &nbsp;
 
 # Escalonamento Multidimensional no R
+
+## Métrico
+
+## Não métrico
+
+```{r, warning=F, message=F}
+if(!require(vegan)){install.packages("vegan", repos = "https://cran.fiocruz.br/")}
+require(vegan)
+require(MASS)
+```
+
+```{r}
+dados <- read.csv2("Trabalhos/Trabalho5_MontarAula/naometrico.csv", sep = ",")
+
+dados <- tibble::column_to_rownames(dados, "X")
+
+naometrico <- isoMDS(as.matrix(dados))
+
+ef <- envfit(naometrico, dados, permu = 999)
+ef
+
+plot(naometrico$points, pch = 19)
+plot(ef, p.max = 0.05) # somente os mais significativas
+```
+
+## Exercício
+
+Realize o escalonamento multidimensional com a base `swiss`, do R.
