@@ -38,6 +38,19 @@ O escalonamento multidimensional métrico é feito conforme os seguintes passos:
 
 5. As coordenadas de cada objeto são alteradas levemente de tal maneira que o stress é reduzido.
 
+# Escalonamento Multidimensional Não-Métrico
+
+Este tipo de escalonamento pode ser utilizado na situação em que objetiva-se estudar valores ordinais, e não numéricos. Esse método é invariante sob transformações monotônicas, ou seja, as coordenadas obtidas permaneçam as mesmas
+se valores numéricos das proximidades forem modificados, porém sem modificar a ordem dos postos.
+
+### Modelagem Multidimensional Não-Métrico
+
+Esse  método  propõe  que  as  coordenadas  na representação espacial das proximidades observadas dão origem a distâncias ajustadas, $d_{ij}$, e que estas  distâncias  estão  relacionadas  a  um  conjunto  de  números que chamaremos disparidades, $\hat{d}_{ij},  pela  fórmula:
+
+$$d_{ij} = \hat{d}_{ij} + \varepsilon_{ij}$$
+
+As disparidades são monotônicas com as proximidades observadas e, sujeitas a esta restrição, assemelham-se, tanto quanto possível, às distâncias  ajustadas. 
+
 ### Medidas de adequação do ajuste
 
 Algumas medidas para avaliar o quanto as distâncias derivadas dos dados dissimilaridades se aproximam daqueles originais fornecidas pelos respondentes são:
@@ -61,10 +74,5 @@ $$SSTRESS= \sqrt{\dfrac{\sum_i \sum_j (d_{ij}^2 - \hat{d_{ij}}^2)^2}{\sum_i \sum
 </center>
 
 &nbsp;
-
-# Escalonamento Multidimensional Não-Métrico
-
-Este tipo de escalonamento pode ser utilizado na situação em que objetiva-se estudar valores ordinais, e não numéricos.
-
 
 # Escalonamento Multidimensional no R
